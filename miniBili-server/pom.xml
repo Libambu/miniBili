@@ -37,7 +37,7 @@
         <commons.csv.version>1.2</commons.csv.version>
         <commons.codec.version>1.9</commons.codec.version>
         <commons.io.version>2.5</commons.io.version>
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.34</lombok.version>
         <!---登录注册验证码-->
         <captcha.verion>1.6.2</captcha.verion>
         <!---es search搜索-->
@@ -136,6 +136,17 @@
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>easy-captcha</artifactId>
                 <version>${captcha.verion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.graalvm.js</groupId>
+                <artifactId>js</artifactId>
+                <version>21.3.0</version> <!-- 使用最新稳定版本 -->
+            </dependency>
+            <dependency>
+                <groupId>org.graalvm.js</groupId>
+                <artifactId>js-scriptengine</artifactId>
+                <version>21.3.0</version>
             </dependency>
 
         </dependencies>

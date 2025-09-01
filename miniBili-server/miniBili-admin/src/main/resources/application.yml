@@ -1,7 +1,5 @@
 server:
   port: 7070
-  servlet:
-    context-path: /admin
 spring:
   servlet:
     multipart:
@@ -10,9 +8,9 @@ spring:
   application:
     name: miniBili-admin
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/miniBili?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/minibili?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     username: root
-    password: root
+    password: egco711.
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: HikariCPDatasource
@@ -43,7 +41,7 @@ project:
   folder: E:/program/workspace/miniBili/
 log:
   root:
-    level: debug
+    level: info
 admin:
   account: admin
   password: admin123
