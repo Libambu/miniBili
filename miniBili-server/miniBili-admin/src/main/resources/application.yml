@@ -41,7 +41,7 @@ project:
   folder: E:/program/workspace/miniBili/
 log:
   root:
-    level: info
+    level: debug
 admin:
   account: admin
   password: admin123

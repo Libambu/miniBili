@@ -56,7 +56,7 @@ public class AppIntercept implements HandlerInterceptor {
             return null;
         }
         for(Cookie c :cookies){
-            if(c.getName().equals(Constants.TOKEN_WEB)){
+            if(c.getName().equals(Constants.TOKEN_ADMIN)){
                 return c.getValue();
             }
         }

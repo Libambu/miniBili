@@ -66,4 +66,19 @@ public class StringTools {
     public static final String encodeByMd5(String originPassword){
         return originPassword.isEmpty()?null: DigestUtils.md5Hex(originPassword);
     }
+    public static  boolean pathIsOK(String path){
+        if(StringTools.isEmpty(path)){
+            return false;
+        }
+        if(path.contains("../")||path.contains("..\\")){
+            return false;
+        }
+        return true;
+    }
+    public static String getFileSuffix(String fileName){
+        if(StringTools.isEmpty(fileName) || !fileName.contains(".")){
+            return null;
+        }
+        return fileName.substring(fileName.lastIndexOf("."));
+    }
 }

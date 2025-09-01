@@ -2,10 +2,12 @@ package com.miniBili.component;
 
 import com.miniBili.entity.constants.Constants;
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.po.CategoryInfo;
 import com.miniBili.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -59,5 +61,9 @@ public class RedisComponent {
 
     public String  getToken4Admin(String token) {
         return (String) redisUtils.get(Constants.REDIS_KEY_TOKEN_ADMIN + token);
+    }
+
+    public void saveCategoryList(List<CategoryInfo> list){
+        redisUtils.set(Constants.REDIS_KEY_CATEGORY_LIST,list);
     }
 }
