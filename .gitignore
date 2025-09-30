@@ -36,3 +36,5 @@ build/
 /CloudNest-Server/file
 /logs
 /file
+/miniBili-front/easylive-front-admin/node_modules
+/miniBili-front/easylive-front-web/node_modules

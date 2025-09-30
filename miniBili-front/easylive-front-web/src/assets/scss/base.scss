@@ -1,0 +1,72 @@
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #bfbfbf;
+}
+
+::-webkit-scrollbar-corner {
+    background: #bfbfbf;
+}
+
+:root {
+    --text: #18191C;
+    --text2: #61666D;
+    --text3: #9499a0;
+    --blue: #00AEEC;
+    --blue2: #007fff;
+    --blue3: #00a1d6;
+    --bodyPadding: 150px;
+}
+
+/* @media (min-width: 1560px) and (max-width: 2059.9px) {
+    :root {
+        --layout-padding: 140px;
+    }
+}
+ */
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: PingFang SC,
+        HarmonyOS_Regular,
+        Helvetica Neue,
+        Microsoft YaHei,
+        sans-serif;
+    ;
+}
+
+.disable {
+    color: #c1c1c1 !important;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.a-link {
+    text-decoration: none;
+    color: #007fff;
+    text-decoration: none;
+}
+
+//去除下拉菜单 黑边
+.el-tooltip__trigger:focus-visible {
+    outline: unset;
+}

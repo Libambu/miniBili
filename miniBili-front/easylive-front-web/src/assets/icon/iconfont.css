@@ -1,0 +1,283 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4587075 */
+  src: url('iconfont.woff2?t=1724835551278') format('woff2'),
+       url('iconfont.woff?t=1724835551278') format('woff'),
+       url('iconfont.ttf?t=1724835551278') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-comment:before {
+  content: "\e603";
+}
+
+.icon-collect:before {
+  content: "\e611";
+}
+
+.icon-sys-message:before {
+  content: "\e64d";
+}
+
+.icon-checked:before {
+  content: "\e624";
+}
+
+.icon-user:before {
+  content: "\e608";
+}
+
+.icon-logout:before {
+  content: "\e689";
+}
+
+.icon-left:before {
+  content: "\f039";
+}
+
+.icon-right:before {
+  content: "\f03a";
+}
+
+.icon-logo:before {
+  content: "\e635";
+}
+
+.icon-sexw:before {
+  content: "\e620";
+}
+
+.icon-sexm:before {
+  content: "\e632";
+}
+
+.icon-move:before {
+  content: "\e72c";
+}
+
+.icon-empty:before {
+  content: "\e60e";
+}
+
+.icon-playlist:before {
+  content: "\e74e";
+}
+
+.icon-add:before {
+  content: "\e64b";
+}
+
+.icon-setting:before {
+  content: "\e78e";
+}
+
+.icon-checkcode:before {
+  content: "\e626";
+}
+
+.icon-account:before {
+  content: "\e60a";
+}
+
+.icon-password:before {
+  content: "\e65d";
+}
+
+.icon-email:before {
+  content: "\e607";
+}
+
+.icon-user2:before {
+  content: "\e628";
+}
+
+.icon-close:before {
+  content: "\e66a";
+}
+
+.icon-delete2:before {
+  content: "\e680";
+}
+
+.icon-edit:before {
+  content: "\e61a";
+}
+
+.icon-play-solid:before {
+  content: "\eb78";
+}
+
+.icon-danmu-solid:before {
+  content: "\e678";
+}
+
+.icon-comment-solid:before {
+  content: "\e610";
+}
+
+.icon-content:before {
+  content: "\e61f";
+}
+
+.icon-datacenter:before {
+  content: "\e6d0";
+}
+
+.icon-hudong:before {
+  content: "\e641";
+}
+
+.icon-home:before {
+  content: "\e693";
+}
+
+.icon-fans:before {
+  content: "\e600";
+}
+
+.icon-wating:before {
+  content: "\e64a";
+}
+
+.icon-error:before {
+  content: "\e8d9";
+}
+
+.icon-success:before {
+  content: "\e842";
+}
+
+.icon-del:before {
+  content: "\e61c";
+}
+
+.icon-play3:before {
+  content: "\e80f";
+}
+
+.icon-pause:before {
+  content: "\e623";
+}
+
+.icon-video:before {
+  content: "\e629";
+}
+
+.icon-at:before {
+  content: "\e62d";
+}
+
+.icon-image:before {
+  content: "\e92e";
+}
+
+.icon-emoji:before {
+  content: "\e6f6";
+}
+
+.icon-image-error:before {
+  content: "\e606";
+}
+
+.icon-like-solid:before {
+  content: "\e657";
+}
+
+.icon-no-good:before {
+  content: "\e688";
+}
+
+.icon-list:before {
+  content: "\f038";
+}
+
+.icon-toubi:before {
+  content: "\e655";
+}
+
+.icon-collection-solid:before {
+  content: "\e647";
+}
+
+.icon-good:before {
+  content: "\e673";
+}
+
+.icon-delete:before {
+  content: "\e62a";
+}
+
+.icon-narrow-screen:before {
+  content: "\e65a";
+}
+
+.icon-wide-screen:before {
+  content: "\e662";
+}
+
+.icon-more:before {
+  content: "\e6ad";
+}
+
+.icon-up:before {
+  content: "\e85f";
+}
+
+.icon-down:before {
+  content: "\ed51";
+}
+
+.icon-upzhu:before {
+  content: "\e666";
+}
+
+.icon-danmu:before {
+  content: "\e665";
+}
+
+.icon-danmushu-mian-24-danmu:before {
+  content: "\e60c";
+}
+
+.icon-play2:before {
+  content: "\e62e";
+}
+
+.icon-hot:before {
+  content: "\e83d";
+}
+
+.icon-search:before {
+  content: "\e619";
+}
+
+.icon-upload:before {
+  content: "\e7e0";
+}
+
+.icon-light:before {
+  content: "\e631";
+}
+
+.icon-history:before {
+  content: "\e61d";
+}
+
+.icon-play:before {
+  content: "\e637";
+}
+
+.icon-collection:before {
+  content: "\e697";
+}
+
+.icon-message:before {
+  content: "\ed50";
+}
+

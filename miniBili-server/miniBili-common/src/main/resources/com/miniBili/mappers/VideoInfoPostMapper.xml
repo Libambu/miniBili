@@ -35,6 +35,14 @@
 		<result column="interaction" property="interaction"  />
 		<!--持续时间-->
 		<result column="duration" property="duration"  />
+
+		<result column="play_count" property="playCount"/>
+		<result column="like_count" property="likeCount"/>
+		<result column="danmu_count" property="danmuCount"/>
+		<result column="comment_count" property="commentCount"/>
+		<result column="coin_count" property="coinCount"/>
+		<result column="collect_count" property="collectCount"/>
+		<result column="recommend_count" property="recommendType"/>
 	</resultMap>
 
 
