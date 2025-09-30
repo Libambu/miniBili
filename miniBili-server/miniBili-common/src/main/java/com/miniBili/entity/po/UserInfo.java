@@ -95,15 +95,16 @@ public class UserInfo implements Serializable {
 	 */
 	private Integer theme;
 
-	private String LastLoginIp;
+	/**
+	 * 
+	 */
+	private String lastLoginIp;
 
-	public String getLastLoginIp() {
-		return LastLoginIp;
-	}
+	/**
+	 * 
+	 */
+	private String avatar;
 
-	public void setLastLoginIp(String LastLoginIp) {
-		this.LastLoginIp = LastLoginIp;
-	}
 
 	public void setUserId(String userId){
 		this.userId = userId;
@@ -225,8 +226,24 @@ public class UserInfo implements Serializable {
 		return this.theme;
 	}
 
+	public void setLastLoginIp(String lastLoginIp){
+		this.lastLoginIp = lastLoginIp;
+	}
+
+	public String getLastLoginIp(){
+		return this.lastLoginIp;
+	}
+
+	public void setAvatar(String avatar){
+		this.avatar = avatar;
+	}
+
+	public String getAvatar(){
+		return this.avatar;
+	}
+
 	@Override
 	public String toString (){
-		return "用户id:"+(userId == null ? "空" : userId)+"，用户昵称:"+(nickName == null ? "空" : nickName)+"，用户邮箱:"+(email == null ? "空" : email)+"，用户密码:"+(password == null ? "空" : password)+"，性别 0女1男2未知:"+(sex == null ? "空" : sex)+"，birthday:"+(birthday == null ? "空" : birthday)+"，学校:"+(school == null ? "空" : school)+"，个人简介:"+(personIntroduction == null ? "空" : personIntroduction)+"，注册时间:"+(joinTime == null ? "空" : DateUtil.format(joinTime, DateTimePatternEnum.YYYY_MM_DD_HH_MM_SS.getPattern()))+"，最新登陆时间:"+(lastLoginTime == null ? "空" : lastLoginTime)+"，状态 0禁用 1正常:"+(status == null ? "空" : status)+"，空间公告:"+(noticeInfo == null ? "空" : noticeInfo)+"，总硬币数:"+(totalCoinCount == null ? "空" : totalCoinCount)+"，当前硬币数:"+(currentCoinCount == null ? "空" : currentCoinCount)+"，主题:"+(theme == null ? "空" : theme);
+		return "用户id:"+(userId == null ? "空" : userId)+"，用户昵称:"+(nickName == null ? "空" : nickName)+"，用户邮箱:"+(email == null ? "空" : email)+"，用户密码:"+(password == null ? "空" : password)+"，性别 0女1男2未知:"+(sex == null ? "空" : sex)+"，birthday:"+(birthday == null ? "空" : birthday)+"，学校:"+(school == null ? "空" : school)+"，个人简介:"+(personIntroduction == null ? "空" : personIntroduction)+"，注册时间:"+(joinTime == null ? "空" : DateUtil.format(joinTime, DateTimePatternEnum.YYYY_MM_DD_HH_MM_SS.getPattern()))+"，最新登陆时间:"+(lastLoginTime == null ? "空" : DateUtil.format(lastLoginTime, DateTimePatternEnum.YYYY_MM_DD_HH_MM_SS.getPattern()))+"，状态 0禁用 1正常:"+(status == null ? "空" : status)+"，空间公告:"+(noticeInfo == null ? "空" : noticeInfo)+"，总硬币数:"+(totalCoinCount == null ? "空" : totalCoinCount)+"，当前硬币数:"+(currentCoinCount == null ? "空" : currentCoinCount)+"，主题:"+(theme == null ? "空" : theme)+"，lastLoginIp:"+(lastLoginIp == null ? "空" : lastLoginIp)+"，avatar:"+(avatar == null ? "空" : avatar);
 	}
 }

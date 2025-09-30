@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.miniBili.component.RedisComponent;
+import com.miniBili.entity.constants.Constants;
 import com.miniBili.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -225,6 +226,15 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
 		}
 		categoryInfoMapper.updateSortBatch(list);
 		save2redis();
+	}
+
+	@Override
+	public List<CategoryInfo> getAllCategoryList() {
+		List<CategoryInfo> categoryInfoList = redisComponent.getCategoryList();
+		if(categoryInfoList==null){
+			save2redis();
+		}
+		return redisComponent.getCategoryList();
 	}
 
 	private void findAllIds(List<Integer>allIds, Integer categoryId){

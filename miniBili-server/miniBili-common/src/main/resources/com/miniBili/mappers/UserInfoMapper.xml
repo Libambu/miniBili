@@ -35,8 +35,10 @@
 		<result column="current_coin_count" property="currentCoinCount"  />
 		<!--主题-->
 		<result column="theme" property="theme"  />
-
+		<!---->
 		<result column="last_login_ip" property="lastLoginIp"  />
+		<!---->
+		<result column="avatar" property="avatar"  />
 	</resultMap>
 
 
@@ -44,10 +46,9 @@
 	<sql id="base_column_list">
 		 u.user_id,u.nick_name,u.email,u.password,u.sex,
 		 u.birthday,u.school,u.person_introduction,u.join_time,u.last_login_time,
-		 u.status,u.notice_info,u.total_coin_count,u.current_coin_count,u.theme,u.last_login_ip
-
+		 u.status,u.notice_info,u.total_coin_count,u.current_coin_count,u.theme,
+		 u.last_login_ip,u.avatar
 	</sql>
-
 
 	<sql id="base_condition_filed">
 			<if test="query.userId != null and query.userId!=''">
@@ -77,8 +78,8 @@
 			<if test="query.joinTime != null and query.joinTime!=''">
 				 <![CDATA[ and  u.join_time=str_to_date(#{query.joinTime}, '%Y-%m-%d') ]]>
 			</if>
-			<if test="query.lastLoginTime != null">
-				 and  u.last_login_time = #{query.lastLoginTime}
+			<if test="query.lastLoginTime != null and query.lastLoginTime!=''">
+				 <![CDATA[ and  u.last_login_time=str_to_date(#{query.lastLoginTime}, '%Y-%m-%d') ]]>
 			</if>
 			<if test="query.status != null">
 				 and  u.status = #{query.status}
@@ -95,9 +96,12 @@
 			<if test="query.theme != null">
 				 and  u.theme = #{query.theme}
 			</if>
-		<if test="query.lastLoginIp != null">
-			and  u.last_login_ip = #{query.lastLoginIp}
-		</if>
+			<if test="query.lastLoginIp != null and query.lastLoginIp!=''">
+				 and  u.last_login_ip = #{query.lastLoginIp}
+			</if>
+			<if test="query.avatar != null and query.avatar!=''">
+				 and  u.avatar = #{query.avatar}
+			</if>
 	</sql>
 
 	<!-- 通用查询条件列-->
@@ -131,8 +135,20 @@
 			<if test="query.joinTimeEnd!= null and query.joinTimeEnd!=''">
 				 <![CDATA[ and  u.join_time< date_sub(str_to_date(#{query.joinTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
 			</if>
+			<if test="query.lastLoginTimeStart!= null and query.lastLoginTimeStart!=''">
+				 <![CDATA[ and  u.last_login_time>=str_to_date(#{query.lastLoginTimeStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.lastLoginTimeEnd!= null and query.lastLoginTimeEnd!=''">
+				 <![CDATA[ and  u.last_login_time< date_sub(str_to_date(#{query.lastLoginTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
 			<if test="query.noticeInfoFuzzy!= null  and query.noticeInfoFuzzy!=''">
 				 and  u.notice_info like concat('%', #{query.noticeInfoFuzzy}, '%')
+			</if>
+			<if test="query.lastLoginIpFuzzy!= null  and query.lastLoginIpFuzzy!=''">
+				 and  u.last_login_ip like concat('%', #{query.lastLoginIpFuzzy}, '%')
+			</if>
+			<if test="query.avatarFuzzy!= null  and query.avatarFuzzy!=''">
+				 and  u.avatar like concat('%', #{query.avatarFuzzy}, '%')
 			</if>
 	 </where>
 	</sql>
@@ -202,6 +218,12 @@
 			<if test="bean.theme != null">
 				 theme,
 			</if>
+			<if test="bean.lastLoginIp != null">
+				 last_login_ip,
+			</if>
+			<if test="bean.avatar != null">
+				 avatar,
+			</if>
 		 </trim>
 		 <trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="bean.userId!=null">
@@ -248,6 +270,12 @@
 			</if>
 			<if test="bean.theme!=null">
 				 #{bean.theme},
+			</if>
+			<if test="bean.lastLoginIp!=null">
+				 #{bean.lastLoginIp},
+			</if>
+			<if test="bean.avatar!=null">
+				 #{bean.avatar},
 			</if>
 		 </trim>
 	</insert>
@@ -301,6 +329,12 @@
 			<if test="bean.theme != null">
 				 theme,
 			</if>
+			<if test="bean.lastLoginIp != null">
+				 last_login_ip,
+			</if>
+			<if test="bean.avatar != null">
+				 avatar,
+			</if>
 		 </trim>
 		 <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="bean.userId!=null">
@@ -347,6 +381,12 @@
 			</if>
 			<if test="bean.theme!=null">
 				 #{bean.theme},
+			</if>
+			<if test="bean.lastLoginIp!=null">
+				 #{bean.lastLoginIp},
+			</if>
+			<if test="bean.avatar!=null">
+				 #{bean.avatar},
 			</if>
 		 </trim>
 		 on DUPLICATE key update 
@@ -396,6 +436,12 @@
 			<if test="bean.theme!=null">
 				 theme = VALUES(theme),
 			</if>
+			<if test="bean.lastLoginIp!=null">
+				 last_login_ip = VALUES(last_login_ip),
+			</if>
+			<if test="bean.avatar!=null">
+				 avatar = VALUES(avatar),
+			</if>
 		 </trim>
 	</insert>
 
@@ -416,7 +462,9 @@
 			 notice_info,
 			 total_coin_count,
 			 current_coin_count,
-			 theme
+			 theme,
+			 last_login_ip,
+			 avatar
 		 )values
 		 <foreach collection="list" item="item" separator=",">
 			 (
@@ -434,7 +482,9 @@
 				 #{item.noticeInfo},
 				 #{item.totalCoinCount},
 				 #{item.currentCoinCount},
-				 #{item.theme}
+				 #{item.theme},
+				 #{item.lastLoginIp},
+				 #{item.avatar}
 			 )
 		 </foreach>
 	</insert>
@@ -456,7 +506,9 @@
 			 notice_info,
 			 total_coin_count,
 			 current_coin_count,
-			 theme
+			 theme,
+			 last_login_ip,
+			 avatar
 		 )values
 		 <foreach collection="list" item="item" separator=",">
 			 (
@@ -474,7 +526,9 @@
 				 #{item.noticeInfo},
 				 #{item.totalCoinCount},
 				 #{item.currentCoinCount},
-				 #{item.theme}
+				 #{item.theme},
+				 #{item.lastLoginIp},
+				 #{item.avatar}
 			 )
 		 </foreach>
 			on DUPLICATE key update 
@@ -492,7 +546,9 @@
 			notice_info = VALUES(notice_info),
 			total_coin_count = VALUES(total_coin_count),
 			current_coin_count = VALUES(current_coin_count),
-			theme = VALUES(theme)
+			theme = VALUES(theme),
+			last_login_ip = VALUES(last_login_ip),
+			avatar = VALUES(avatar)
 	</insert>
 
 	<!--多条件修改-->
@@ -544,6 +600,12 @@
 			<if test="bean.theme != null">
 				 theme = #{bean.theme},
 			</if>
+			<if test="bean.lastLoginIp != null">
+				 last_login_ip = #{bean.lastLoginIp},
+			</if>
+			<if test="bean.avatar != null">
+				 avatar = #{bean.avatar},
+			</if>
  		 </set>
  		 <include refid="query_condition" />
 	</update>
@@ -553,8 +615,6 @@
 		 delete u from user_info u
  		 <include refid="query_condition" />
 	</delete>
-
-
 
 
 	<!-- 根据UserId修改-->
@@ -603,9 +663,12 @@
 			<if test="bean.theme != null">
 				 theme = #{bean.theme},
 			</if>
-			 <if test="bean.lastLoginIp != null">
+			<if test="bean.lastLoginIp != null">
 				 last_login_ip = #{bean.lastLoginIp},
-			 </if>
+			</if>
+			<if test="bean.avatar != null">
+				 avatar = #{bean.avatar},
+			</if>
  		 </set>
  		 where user_id=#{userId}
 	</update>
@@ -666,6 +729,12 @@
 			<if test="bean.theme != null">
 				 theme = #{bean.theme},
 			</if>
+			<if test="bean.lastLoginIp != null">
+				 last_login_ip = #{bean.lastLoginIp},
+			</if>
+			<if test="bean.avatar != null">
+				 avatar = #{bean.avatar},
+			</if>
  		 </set>
  		 where nick_name=#{nickName}
 	</update>
@@ -725,6 +794,12 @@
 			</if>
 			<if test="bean.theme != null">
 				 theme = #{bean.theme},
+			</if>
+			<if test="bean.lastLoginIp != null">
+				 last_login_ip = #{bean.lastLoginIp},
+			</if>
+			<if test="bean.avatar != null">
+				 avatar = #{bean.avatar},
 			</if>
  		 </set>
  		 where email=#{email}

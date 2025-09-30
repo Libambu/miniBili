@@ -1,32 +1,25 @@
 package com.miniBili.web.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.constants.Constants;
 import com.miniBili.entity.dto.TokenInfoDto;
-import com.miniBili.entity.query.UserInfoQuery;
-import com.miniBili.entity.po.UserInfo;
 import com.miniBili.entity.vo.ResponseVO;
 import com.miniBili.exception.BusinessException;
 import com.miniBili.service.UserInfoService;
 import com.wf.captcha.ArithmeticCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**

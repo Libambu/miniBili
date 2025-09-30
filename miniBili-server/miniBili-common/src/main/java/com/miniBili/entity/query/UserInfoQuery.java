@@ -75,7 +75,11 @@ public class UserInfoQuery extends BaseParam {
 	/**
 	 * 最新登陆时间
 	 */
-	private Integer lastLoginTime;
+	private String lastLoginTime;
+
+	private String lastLoginTimeStart;
+
+	private String lastLoginTimeEnd;
 
 	/**
 	 * 状态 0禁用 1正常
@@ -103,6 +107,20 @@ public class UserInfoQuery extends BaseParam {
 	 * 主题
 	 */
 	private Integer theme;
+
+	/**
+	 * 
+	 */
+	private String lastLoginIp;
+
+	private String lastLoginIpFuzzy;
+
+	/**
+	 * 
+	 */
+	private String avatar;
+
+	private String avatarFuzzy;
 
 
 	public void setUserId(String userId){
@@ -248,12 +266,27 @@ public class UserInfoQuery extends BaseParam {
 		return this.joinTimeEnd;
 	}
 
-	public void setLastLoginTime(Integer lastLoginTime){
+	public void setLastLoginTime(String lastLoginTime){
 		this.lastLoginTime = lastLoginTime;
 	}
 
-	public Integer getLastLoginTime(){
+	public String getLastLoginTime(){
 		return this.lastLoginTime;
+	}
+
+	public void setLastLoginTimeStart(String lastLoginTimeStart){
+		this.lastLoginTimeStart = lastLoginTimeStart;
+	}
+
+	public String getLastLoginTimeStart(){
+		return this.lastLoginTimeStart;
+	}
+	public void setLastLoginTimeEnd(String lastLoginTimeEnd){
+		this.lastLoginTimeEnd = lastLoginTimeEnd;
+	}
+
+	public String getLastLoginTimeEnd(){
+		return this.lastLoginTimeEnd;
 	}
 
 	public void setStatus(Integer status){
@@ -302,6 +335,38 @@ public class UserInfoQuery extends BaseParam {
 
 	public Integer getTheme(){
 		return this.theme;
+	}
+
+	public void setLastLoginIp(String lastLoginIp){
+		this.lastLoginIp = lastLoginIp;
+	}
+
+	public String getLastLoginIp(){
+		return this.lastLoginIp;
+	}
+
+	public void setLastLoginIpFuzzy(String lastLoginIpFuzzy){
+		this.lastLoginIpFuzzy = lastLoginIpFuzzy;
+	}
+
+	public String getLastLoginIpFuzzy(){
+		return this.lastLoginIpFuzzy;
+	}
+
+	public void setAvatar(String avatar){
+		this.avatar = avatar;
+	}
+
+	public String getAvatar(){
+		return this.avatar;
+	}
+
+	public void setAvatarFuzzy(String avatarFuzzy){
+		this.avatarFuzzy = avatarFuzzy;
+	}
+
+	public String getAvatarFuzzy(){
+		return this.avatarFuzzy;
 	}
 
 }

@@ -95,4 +95,6 @@ public interface CategoryInfoService {
 	void delCategory(@NotEmpty Integer categoryId);
 
 	void changeSort(@NotNull Integer pCategoryId, @NotEmpty String categoryIds);
+
+	List<CategoryInfo> getAllCategoryList();
 }
