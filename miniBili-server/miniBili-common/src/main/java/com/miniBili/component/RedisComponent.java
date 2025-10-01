@@ -128,6 +128,14 @@ public class RedisComponent {
         redisUtils.lpushAll(Constants.REDIS_KEY_FILE_DEL+videoId,filePath,Constants.REDIS_KEY_EXPIRE_ONE_DAY*7L);
     }
 
+    public List<String> getDelFileList(String videoId) {
+        return redisUtils.getQueueList(Constants.REDIS_KEY_FILE_DEL+videoId);
+    }
+
+    public void cleanDelFileList(String videoId) {
+        redisUtils.delete(Constants.REDIS_KEY_FILE_DEL+videoId);
+    }
+
     public void addFile2TransFerQueue(String videoId,List<VideoInfoFilePost> addFileList) {
         redisUtils.lpushAll(Constants.REDIS_KEY_QUEUE_TRANSFER ,addFileList,0);
     }
@@ -135,5 +143,7 @@ public class RedisComponent {
     public  VideoInfoFilePost getFileFromTransFerQueue(){
         return (VideoInfoFilePost)redisUtils.rpop(Constants.REDIS_KEY_QUEUE_TRANSFER);
     }
+
+
 
 }

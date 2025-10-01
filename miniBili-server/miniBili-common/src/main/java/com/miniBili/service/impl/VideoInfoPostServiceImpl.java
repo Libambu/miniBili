@@ -10,30 +10,27 @@ import javax.annotation.Resource;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.config.AppConfig;
 import com.miniBili.entity.constants.Constants;
+import com.miniBili.entity.dto.SysSettingDto;
 import com.miniBili.entity.dto.UploadingFileDto;
 import com.miniBili.entity.enums.*;
+import com.miniBili.entity.po.VideoInfo;
 import com.miniBili.entity.po.VideoInfoFile;
 import com.miniBili.entity.po.VideoInfoFilePost;
-import com.miniBili.entity.query.VideoInfoFilePostQuery;
-import com.miniBili.entity.query.VideoInfoFileQuery;
+import com.miniBili.entity.query.*;
 import com.miniBili.exception.BusinessException;
 import com.miniBili.mappers.VideoInfoFileMapper;
 import com.miniBili.mappers.VideoInfoFilePostMapper;
-import com.miniBili.utils.FFmpegUtils;
-import com.miniBili.utils.FileUtils;
-import com.miniBili.utils.ProcessUtils;
+import com.miniBili.mappers.VideoInfoMapper;
+import com.miniBili.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.miniBili.entity.query.VideoInfoPostQuery;
 import com.miniBili.entity.po.VideoInfoPost;
 import com.miniBili.entity.vo.PaginationResultVO;
-import com.miniBili.entity.query.SimplePage;
 import com.miniBili.mappers.VideoInfoPostMapper;
 import com.miniBili.service.VideoInfoPostService;
-import com.miniBili.utils.StringTools;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
@@ -55,6 +52,10 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 	private AppConfig appConfig;
 	@Autowired
 	private FFmpegUtils fFmpegUtils;
+	@Autowired
+	private VideoInfoMapper<VideoInfo, VideoInfoQuery> videoInfoMapper;
+	@Autowired
+	private VideoInfoFileMapper<VideoInfoFile,VideoInfoFileQuery> videoInfoFileMapper;
 
 	/**
 	 * 根据条件查询列表
@@ -335,6 +336,7 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 		}
 	}
 
+
 	private Boolean changeVideoInfo(VideoInfoPost videoInfoPost){
 		VideoInfoPost dbFileInfo = videoInfoPostMapper.selectByVideoId(videoInfoPost.getVideoId());
 		if(!videoInfoPost.getVideoName().equals(dbFileInfo.getVideoName())
@@ -403,6 +405,73 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 	}
 
 
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void aduitVideo(String videoId, Integer status, String reason) {
+		VideoStatusEnum videoStatusEnum = VideoStatusEnum.getByStatus(status);
+		if(videoStatusEnum==null){
+			throw new BusinessException(ResponseCodeEnum.CODE_600);
+		}
+		//乐观锁
+		VideoInfoPost videoInfoPost = new VideoInfoPost();
+		videoInfoPost.setStatus(status);
 
+		VideoInfoPostQuery query = new VideoInfoPostQuery();
+		query.setStatus(VideoStatusEnum.STATUS2.getStatus());
+		query.setVideoId(videoId);
+		Integer count =  videoInfoPostMapper.updateByParam(videoInfoPost,query);
+		if(count==0){
+			throw new BusinessException("审核失败，稍后重试");
+		}
+		//更新视频文件的状态
+		VideoInfoFilePost videoInfoFilePost = new VideoInfoFilePost();
+		videoInfoFilePost.setUpdateType(VideoFileUpdateTypeEnum.NO_UPDATE.getStatus());
+
+		VideoInfoFilePostQuery filePostQuery = new VideoInfoFilePostQuery();
+		filePostQuery.setVideoId(videoId);
+		videoInfoFilePostMapper.updateByParam(videoInfoFilePost,filePostQuery);
+		//审核不通过return
+		if(VideoStatusEnum.STATUS4 == videoStatusEnum){
+			return;
+		}
+
+		VideoInfoPost infopost = videoInfoPostMapper.selectByVideoId(videoId);
+
+		VideoInfo dbvideoInfo = videoInfoMapper.selectByVideoId(videoId);
+
+		if(dbvideoInfo==null){
+			//第一次投稿，给用户加积分
+			SysSettingDto sysSettingDto = redisComponent.getSystemSetting();
+			//TODO 给用户加硬币
+		}
+		//将审核表拷贝到正式表
+		VideoInfo videoInfo = CopyTools.copy(infopost,VideoInfo.class);
+		videoInfoMapper.insertOrUpdate(videoInfo);
+		//更新视频文件到正式表，先都删除再添加
+		VideoInfoFileQuery  videoInfoFileQuery = new VideoInfoFileQuery();
+		videoInfoFileQuery.setVideoId(videoId);
+		videoInfoFileMapper.deleteByParam(videoInfoFileQuery);
+		VideoInfoFilePostQuery videoInfoFilePostQuery = new VideoInfoFilePostQuery();
+		videoInfoFilePostQuery.setVideoId(videoId);
+		List<VideoInfoFilePost> videoInfoFilePostsList = videoInfoFilePostMapper.selectList(videoInfoFilePostQuery);
+		List<VideoInfoFile> videoInfoFileList = CopyTools.copyList(videoInfoFilePostsList,VideoInfoFile.class);
+		videoInfoFileMapper.insertBatch(videoInfoFileList);
+
+		/**
+		 * 删除文件，从消息队列中取出删除,因为到目前为止还没有删除本地服务器的视频文件
+		 */
+		List<String> filePathList = redisComponent.getDelFileList(videoId);
+		if(filePathList!=null){
+			for(String path : filePathList){
+				File file = new File(appConfig.getProjectFolder()+Constants.FILE_FOLDER + path);
+				if(file.exists()){
+					FileUtils.deleteFile(file);
+				}
+			}
+		}
+		redisComponent.cleanDelFileList(videoId);
+
+		//TODO 保存信息到es中
+	}
 
 }

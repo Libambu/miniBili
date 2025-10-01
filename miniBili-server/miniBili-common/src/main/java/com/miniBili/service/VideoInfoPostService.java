@@ -7,6 +7,9 @@ import com.miniBili.entity.query.VideoInfoPostQuery;
 import com.miniBili.entity.po.VideoInfoPost;
 import com.miniBili.entity.vo.PaginationResultVO;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 /**
  * 审核中的信息表 业务接口
@@ -73,4 +76,6 @@ public interface VideoInfoPostService {
     void saveVideoInfo(VideoInfoPost videoInfoPost, List<VideoInfoFilePost> filePostList);
 
 	void transferVideoFile(VideoInfoFilePost videoInfoFilePost);
+
+	void aduitVideo(@NotEmpty String videoId, @NotNull Integer status, String reason);
 }
