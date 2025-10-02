@@ -8,14 +8,17 @@ import com.miniBili.entity.dto.TokenInfoDto;
 import com.miniBili.entity.dto.UploadingFileDto;
 import com.miniBili.entity.enums.DateTimePatternEnum;
 import com.miniBili.entity.enums.ResponseCodeEnum;
+import com.miniBili.entity.po.VideoInfoFile;
 import com.miniBili.entity.vo.ResponseVO;
 import com.miniBili.exception.BusinessException;
+import com.miniBili.service.impl.VideoInfoFileServiceImpl;
 import com.miniBili.utils.DateUtil;
 import com.miniBili.utils.FFmpegUtils;
 import com.miniBili.utils.StringTools;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +45,8 @@ public class FileController extends ABaseController{
 
     @Autowired
     private AppConfig appConfig;
+    @Autowired
+    private VideoInfoFileServiceImpl videoInfoFileService;
 
     @RequestMapping("/getResource")
     public void getResource(HttpServletResponse response,@NotNull String  sourceName){
@@ -147,6 +152,37 @@ public class FileController extends ABaseController{
         }
         return getSuccessResponseVO(Constants.FILE_COVER + month + "/" + realName);
     }
+
+    /**
+     * 获取m3u8文件
+     * @param response
+     * @param fileId
+     */
+    @RequestMapping("/videoResource/{fileId}")
+    public void videoResource(HttpServletResponse response, @PathVariable @NotEmpty String fileId){
+        VideoInfoFile videoInfoFile = videoInfoFileService.getVideoInfoFileByFileId(fileId);
+        String filePath = videoInfoFile.getFilePath();
+        readFile(response,filePath + "/" + Constants.M3U8_NAME);
+        //TODO 更新视频播放量
+
+    }
+
+
+    /**
+     * 获取ts
+     * @param response
+     * @param fileId
+     * @param ts
+     */
+    @RequestMapping("/videoResource/{fileId}/{ts}")
+    public void videoResourceTs(HttpServletResponse response, @PathVariable @NotEmpty String fileId,@PathVariable @NotEmpty String ts){
+        VideoInfoFile videoInfoFile = videoInfoFileService.getVideoInfoFileByFileId(fileId);
+        String filePath = videoInfoFile.getFilePath();
+        readFile(response,filePath + "/" + ts);
+    }
+
+
+
 
     private void deleteFile(File file){
         if(file.exists()){

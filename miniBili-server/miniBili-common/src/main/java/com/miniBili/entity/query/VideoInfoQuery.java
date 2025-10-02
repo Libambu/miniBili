@@ -147,6 +147,15 @@ public class VideoInfoQuery extends BaseParam {
 
 	private String lastPlayTimeEnd;
 
+	private Boolean queryUserInfo;
+
+	public Boolean getQueryUserInfo() {
+		return queryUserInfo;
+	}
+
+	public void setQueryUserInfo(Boolean queryUserInfo) {
+		this.queryUserInfo = queryUserInfo;
+	}
 
 	public void setVideoId(String videoId){
 		this.videoId = videoId;
