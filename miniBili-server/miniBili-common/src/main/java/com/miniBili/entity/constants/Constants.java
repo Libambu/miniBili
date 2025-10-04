@@ -14,6 +14,7 @@ public class Constants {
     public static final String TOKEN_ADMIN = "adminToken";
     public static final Integer REDIS_KEY_EXPIRE_ONE_MIN = 1000 * 60;
     public static final Integer REDIS_KEY_EXPIRE_ONE_DAY = 1000 * 60 * 60 *24;//毫秒
+    public static final Integer REDIS_KEY_EXPIRE_ONE_Second = 1000 ;
     public static final Integer LENGTH_10 = 10;
     public static final Integer LENGTH_2 = 2;
     public static final Integer ONE = 1;
@@ -29,4 +30,12 @@ public class Constants {
     public static final String TS_NAME = "index.ts";
     public static final String M3U8_NAME = "index.m3u8";
     public static final String VIDEO_CODE_TEMP_SUFFIX = "_temp.mp4";
+
+    //视频在线
+    public static final String REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREIFX = REDIS_KEY_PREFIX + "video:play:online:";
+    public static final String REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE = REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREIFX + "count:%s";
+    public static final String REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREIFX = "user:";
+    public static final String REDIS_KEY_VIDEO_PLAY_COUNT_USER = REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREIFX + REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREIFX + "%s:%s";
+
+    public static final Integer UPDATE_NICK_NAME_COIN = 3;
 }

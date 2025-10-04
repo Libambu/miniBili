@@ -112,4 +112,8 @@ public interface UserInfoService {
     void register(@NotEmpty @Email @Size(max = 150) String email, @NotEmpty @Size String nickName, @NotEmpty String password);
 
 	TokenInfoDto login(@NotEmpty @Email @Size(max = 150) String email, @NotEmpty String password, String ip);
+
+	UserInfo getUserDetail(String currentUserId,String userId);
+
+	void updateUserInfo(UserInfo userInfo, TokenInfoDto tokenInfoDto);
 }

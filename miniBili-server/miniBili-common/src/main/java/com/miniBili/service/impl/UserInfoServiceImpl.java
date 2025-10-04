@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.constants.Constants;
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.enums.UserSexEnum;
 import com.miniBili.entity.enums.UserStatusEnum;
 import com.miniBili.entity.po.UserInfo;
@@ -23,6 +24,7 @@ import com.miniBili.entity.query.SimplePage;
 import com.miniBili.mappers.UserInfoMapper;
 import com.miniBili.service.UserInfoService;
 import com.miniBili.utils.StringTools;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -236,5 +238,43 @@ public class UserInfoServiceImpl implements UserInfoService {
 		TokenInfoDto tokenInfoRes = redisComponent.saveTokenInfo(tokenInfoDto);
 		return tokenInfoRes;
 
+	}
+
+	@Override
+	public UserInfo getUserDetail(String currentUserId, String userId) {
+		UserInfo userInfo = getUserInfoByUserId(userId);
+		if(userInfo==null){
+			throw new BusinessException(ResponseCodeEnum.CODE_404);
+		}
+		//TODO 粉丝相关
+
+		return userInfo;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void updateUserInfo(UserInfo userInfo, TokenInfoDto tokenInfoDto) {
+		UserInfo dbInfo = userInfoMapper.selectByUserId(userInfo.getUserId());
+		if(!dbInfo.getNickName().equals(userInfo.getNickName())||tokenInfoDto.getCurrentCoinCount()<Constants.UPDATE_NICK_NAME_COIN){
+			throw new BusinessException("硬币不足，无法修改名称");
+		}
+		Integer count = userInfoMapper.updateCoinCountInfo(userInfo.getUserId(),-Constants.UPDATE_NICK_NAME_COIN);
+		if(count==0){
+			throw new BusinessException("硬币不足，无法修改昵称");
+		}
+		userInfoMapper.updateByUserId(userInfo,userInfo.getUserId());
+		//将更新的信息重新传到token里面
+		Boolean updateToken = false;
+		if(tokenInfoDto.getAvatar()==null||!tokenInfoDto.getAvatar().equals(userInfo.getAvatar())){
+			tokenInfoDto.setAvatar(userInfo.getAvatar());
+			updateToken=true;
+		}
+		if(!tokenInfoDto.getNickName().equals(userInfo.getNickName())){
+			tokenInfoDto.setNickName(userInfo.getNickName());
+			updateToken=true;
+		}
+		if(updateToken){
+			redisComponent.updateTokenInfo(tokenInfoDto);
+		}
 	}
 }

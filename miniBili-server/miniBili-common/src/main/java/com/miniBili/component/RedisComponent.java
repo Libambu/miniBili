@@ -52,6 +52,12 @@ public class RedisComponent {
         return tokenInfoDto;
     }
 
+    public TokenInfoDto updateTokenInfo(TokenInfoDto tokenInfoDto){
+        redisUtils.setex(Constants.REDIS_KEY_TOKEN_WEB+tokenInfoDto.getToken(),tokenInfoDto,Constants.REDIS_KEY_EXPIRE_ONE_DAY*7l);
+        return tokenInfoDto;
+    }
+
+
     public void cleanToken(String token){
         redisUtils.delete(Constants.REDIS_KEY_TOKEN_WEB+token);
     }
@@ -144,6 +150,25 @@ public class RedisComponent {
         return (VideoInfoFilePost)redisUtils.rpop(Constants.REDIS_KEY_QUEUE_TRANSFER);
     }
 
+
+    public Integer reportVideoPlayOnline(String fileId,String deviceId){
+        String userPlayOnlineKey = String.format(Constants.REDIS_KEY_VIDEO_PLAY_COUNT_USER,fileId,deviceId);
+        String playOnlineCountKey = String.format(Constants.REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE,fileId);
+
+        if(!redisUtils.keyExists(userPlayOnlineKey)){
+            redisUtils.setex(userPlayOnlineKey,fileId,Constants.REDIS_KEY_EXPIRE_ONE_Second*8);
+            return redisUtils.incrementex(playOnlineCountKey,Constants.REDIS_KEY_EXPIRE_ONE_Second*10).intValue();
+        }
+
+        redisUtils.expire(playOnlineCountKey,Constants.REDIS_KEY_EXPIRE_ONE_Second*10);
+        redisUtils.expire(userPlayOnlineKey,Constants.REDIS_KEY_EXPIRE_ONE_Second*8);
+        Integer count = (Integer) redisUtils.get(playOnlineCountKey);
+        return count == null ? 1 :count;
+    }
+
+    public void decreamentPlayOnlineCount(String key){
+        redisUtils.decrement(key);
+    }
 
 
 }

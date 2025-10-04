@@ -1,5 +1,6 @@
 package com.miniBili.web.controller;
 
+import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.dto.TokenInfoDto;
 import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.enums.UserActionTypeEnum;
@@ -39,6 +40,8 @@ public class VideoController extends ABaseController{
     private VideoInfoFileService videoInfoFileService;
     @Autowired
     private UserActionService userActionService;
+    @Autowired
+    private RedisComponent redisComponent;
 
     /**
      * 获取推荐页
@@ -115,13 +118,13 @@ public class VideoController extends ABaseController{
     }
 
     /**
-     * TODO获取在线人数
+     * 使用轮询获取在线人数
      * @param fileId
      * @param deviceId
      * @return
      */
     @RequestMapping("/reportVideoPlayOnline")
     public ResponseVO reportVideoPlayOnline(@NotEmpty String fileId,@NotEmpty String deviceId){
-        return getSuccessResponseVO(null);
+        return getSuccessResponseVO(redisComponent.reportVideoPlayOnline(fileId,deviceId));
     }
 }
