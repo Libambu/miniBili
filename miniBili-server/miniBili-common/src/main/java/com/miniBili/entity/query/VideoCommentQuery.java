@@ -85,6 +85,15 @@ public class VideoCommentQuery extends BaseParam {
 	 */
 	private Integer hateCount;
 
+	private Boolean loadChildren;
+
+	public Boolean getLoadChildren() {
+		return loadChildren;
+	}
+
+	public void setLoadChildren(Boolean loadChildren) {
+		this.loadChildren = loadChildren;
+	}
 
 	public void setCommentId(Integer commentId){
 		this.commentId = commentId;

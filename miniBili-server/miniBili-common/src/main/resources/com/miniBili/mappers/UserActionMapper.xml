@@ -76,6 +76,12 @@
 			<if test="query.actionTimeEnd!= null and query.actionTimeEnd!=''">
 				 <![CDATA[ and  u.action_time< date_sub(str_to_date(#{query.actionTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
 			</if>
+		 <if test="query.actionTypeArray!=null and query.actionTypeArray.length>0">
+			 and action_type in
+			 <foreach collection="query.actionTypeArray" item="item" separator="," open="(" close=")">
+				 #{item}
+			 </foreach>
+		 </if>
 	 </where>
 	</sql>
 
@@ -386,8 +392,8 @@
 	</delete>
 
 	<!-- 根据PrimaryKey获取对象-->
-	<select id="selectByVideoIdAndCommentIdAndActionIdAndUserId" resultMap="base_result_map" >
-		select <include refid="base_column_list" /> from user_action u where video_id=#{videoId} and comment_id=#{commentId} and action_id=#{actionId} and user_id=#{userId}
+	<select id="selectByVideoIdAndCommentIdAndActionTypeAndUserId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from user_action u where video_id=#{videoId} and comment_id=#{commentId} and action_type=#{actionType} and user_id=#{userId}
 	</select>
 
 </mapper>

@@ -87,4 +87,5 @@ public interface UserActionService {
 	 */
 	Integer deleteUserActionByVideoIdAndCommentIdAndActionIdAndUserId(String videoId,Integer commentId,Integer actionId,String userId);
 
+    void saveAction(UserAction userAction);
 }

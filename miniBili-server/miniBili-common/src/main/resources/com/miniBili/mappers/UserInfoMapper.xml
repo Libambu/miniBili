@@ -804,8 +804,18 @@
  		 </set>
  		 where email=#{email}
 	</update>
+    <update id="updateCoinCountInfo">
+		update user_info
+		<set>
+			current_coin_count = current_coin_count + #{changeCount}
+			<if test="changeCount>0">
+				,total_coin_count = total_coin_count + #{changeCount}
+			</if>
+		</set>
+		where user_id = #{userId} and current_coin_count + #{changeCount}>=0;
+	</update>
 
-	<!-- 根据Email删除-->
+    <!-- 根据Email删除-->
 	<delete id="deleteByEmail">
 		delete from user_info where email=#{email}
 	</delete>

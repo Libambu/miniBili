@@ -63,5 +63,7 @@ public interface UserInfoMapper<T,P> extends BaseMapper<T,P> {
 	 */
 	 T selectByEmail(@Param("email") String email);
 
+	 Integer updateCoinCountInfo(String userId,Integer changeCount);
+
 
 }

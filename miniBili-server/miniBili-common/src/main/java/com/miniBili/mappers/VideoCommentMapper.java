@@ -1,6 +1,9 @@
 package com.miniBili.mappers;
 
+import com.miniBili.entity.po.UserAction;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 评论 数据库操作接口
@@ -25,4 +28,7 @@ public interface VideoCommentMapper<T,P> extends BaseMapper<T,P> {
 	 T selectByCommentId(@Param("commentId") Integer commentId);
 
 
+	List<T> selectListWithChildren(@Param("query") P p);
+
+    void updateCountInfo(Integer commentId,String field,Integer changeCount,String opposefield,Integer opposeCount);
 }

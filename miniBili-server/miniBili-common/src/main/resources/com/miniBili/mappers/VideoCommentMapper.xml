@@ -109,6 +109,32 @@
 	 </where>
 	</sql>
 
+	<resultMap id="base_result_map_children" type="com.miniBili.entity.po.VideoComment" extends="base_result_map">
+		<collection property="children" column="comment_id" select="com.miniBili.mappers.VideoCommentMapper.selectChildComment">
+
+		</collection>
+	</resultMap>
+
+	<select id="selectChildComment" resultType="com.miniBili.entity.po.VideoComment">
+		select  v.*,u.nick_name nickName,u.avatar avatar,u2.nick_name replyNickName,u2.avatar replyAvatar
+		from video_comment v
+		inner join user_info u on v.user_id = u.user_id
+		left join user_info u2 on v.reply_user_id = u2.user_id
+		where p_comment_id = #{commentId} order by v.comment_id asc
+	</select>
+
+	<select id="selectListWithChildren" resultMap="base_result_map_children">
+		select <include refid="base_column_list"/>,u.nick_name nickName,u.avatar avatar
+		from video_comment v left join  user_info u on v.user_id = u.user_id
+		<include refid="query_condition" />
+		<if test="query.orderBy!=null">
+			order by ${query.orderBy}
+		</if>
+		<if test="query.simplePage!=null">
+			limit #{query.simplePage.start},#{query.simplePage.end}
+		</if>
+	</select>
+
 	<!-- 查询集合-->
 	<select id="selectList" resultMap="base_result_map" >
 		 SELECT <include refid="base_column_list" /> FROM video_comment v <include refid="query_condition" />
@@ -484,6 +510,9 @@
  		 where comment_id=#{commentId}
 	</update>
 
+
+
+
 	<!-- 根据CommentId删除-->
 	<delete id="deleteByCommentId">
 		delete from video_comment where comment_id=#{commentId}
@@ -493,5 +522,14 @@
 	<select id="selectByCommentId" resultMap="base_result_map" >
 		select <include refid="base_column_list" /> from video_comment v where comment_id=#{commentId}
 	</select>
+
+	<update id="updateCountInfo">
+		update video_comment set ${field} = ${field} + #{changeCount}
+		<if test="opposefield!=null">
+			,${opposefield} = ${opposefield} + #{opposeCount}
+		</if>
+		where comment_id = #{commentId}
+	</update>
+
 
 </mapper>

@@ -836,6 +836,14 @@
  		 where video_id=#{videoId}
 	</update>
 
+	<update id="updateCountInfo">
+		update video_info set ${field} = ${field} + #{changeCount}
+		<if test="field =='play_count'">
+			,last_play_time = NOW()
+		</if>
+		where video_id = #{videoId}
+	</update>
+
 	<!-- 根据VideoId删除-->
 	<delete id="deleteByVideoId">
 		delete from video_info where video_id=#{videoId}

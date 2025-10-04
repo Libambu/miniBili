@@ -4,6 +4,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.entity.enums.ResponseCodeEnum;
+import com.miniBili.entity.enums.UserActionTypeEnum;
+import com.miniBili.entity.po.VideoInfo;
+import com.miniBili.entity.query.VideoInfoQuery;
+import com.miniBili.exception.BusinessException;
+import com.miniBili.mappers.VideoInfoMapper;
+import org.apache.tomcat.jni.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.enums.PageSize;
@@ -14,6 +22,7 @@ import com.miniBili.entity.query.SimplePage;
 import com.miniBili.mappers.VideoDanmuMapper;
 import com.miniBili.service.VideoDanmuService;
 import com.miniBili.utils.StringTools;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -24,6 +33,9 @@ public class VideoDanmuServiceImpl implements VideoDanmuService {
 
 	@Resource
 	private VideoDanmuMapper<VideoDanmu, VideoDanmuQuery> videoDanmuMapper;
+
+	@Autowired
+	private VideoInfoMapper<VideoInfo, VideoInfoQuery> videoInfoMapper;
 
 	/**
 	 * 根据条件查询列表
@@ -126,5 +138,23 @@ public class VideoDanmuServiceImpl implements VideoDanmuService {
 	@Override
 	public Integer deleteVideoDanmuByDanmuId(Integer danmuId) {
 		return this.videoDanmuMapper.deleteByDanmuId(danmuId);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void saveDanmu(VideoDanmu videoDanmu) {
+		VideoInfo videoInfo = videoInfoMapper.selectByVideoId(videoDanmu.getVideoId());
+		if(videoInfo==null){
+			throw new BusinessException(ResponseCodeEnum.CODE_600);
+		}
+		if(videoInfo.getInteraction()!=null&&videoInfo.getInteraction().contains("1")){
+			throw new BusinessException("up主已关闭弹幕");
+		}
+		videoDanmuMapper.insert(videoDanmu);
+		//使用数据库乐观锁避免并发问题
+		String field = UserActionTypeEnum.VIDEO_DANMU.getField();
+		Integer changeCount = 1;
+		videoInfoMapper.updateCountInfo(videoInfo.getVideoId(),field,changeCount);
+		//TODo更新es弹幕数量
 	}
 }

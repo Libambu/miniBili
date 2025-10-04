@@ -69,4 +69,5 @@ public interface VideoCommentService {
 	 */
 	Integer deleteVideoCommentByCommentId(Integer commentId);
 
+    void postComment(VideoComment comment, Integer replyCommentId);
 }

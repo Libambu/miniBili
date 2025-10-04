@@ -1,9 +1,22 @@
 package com.miniBili.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.entity.enums.ResponseCodeEnum;
+import com.miniBili.entity.enums.UserActionTypeEnum;
+import com.miniBili.entity.po.VideoComment;
+import com.miniBili.entity.po.VideoInfo;
+import com.miniBili.entity.query.VideoCommentQuery;
+import com.miniBili.entity.query.VideoInfoQuery;
+import com.miniBili.exception.BusinessException;
+import com.miniBili.mappers.UserInfoMapper;
+import com.miniBili.mappers.VideoCommentMapper;
+import com.miniBili.mappers.VideoInfoMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.enums.PageSize;
@@ -14,16 +27,25 @@ import com.miniBili.entity.query.SimplePage;
 import com.miniBili.mappers.UserActionMapper;
 import com.miniBili.service.UserActionService;
 import com.miniBili.utils.StringTools;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
  * 用户行为，点赞、评论 业务接口实现
  */
+@Slf4j
 @Service("userActionService")
 public class UserActionServiceImpl implements UserActionService {
 
 	@Resource
 	private UserActionMapper<UserAction, UserActionQuery> userActionMapper;
+
+	@Autowired
+	private VideoInfoMapper<VideoInfo, VideoInfoQuery> videoInfoMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+	@Autowired
+	private VideoCommentMapper<VideoComment, VideoCommentQuery> videoCommentMapper;
 
 	/**
 	 * 根据条件查询列表
@@ -133,7 +155,7 @@ public class UserActionServiceImpl implements UserActionService {
 	 */
 	@Override
 	public UserAction getUserActionByVideoIdAndCommentIdAndActionIdAndUserId(String videoId, Integer commentId, Integer actionId, String userId) {
-		return this.userActionMapper.selectByVideoIdAndCommentIdAndActionIdAndUserId(videoId, commentId, actionId, userId);
+		return null;
 	}
 
 	/**
@@ -150,5 +172,72 @@ public class UserActionServiceImpl implements UserActionService {
 	@Override
 	public Integer deleteUserActionByVideoIdAndCommentIdAndActionIdAndUserId(String videoId, Integer commentId, Integer actionId, String userId) {
 		return this.userActionMapper.deleteByVideoIdAndCommentIdAndActionIdAndUserId(videoId, commentId, actionId, userId);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void saveAction(UserAction userAction) {
+		VideoInfo videoInfo = videoInfoMapper.selectByVideoId(userAction.getVideoId());
+		if(videoInfo==null){
+			throw new BusinessException(ResponseCodeEnum.CODE_600);
+		}
+		userAction.setVideoUserId(videoInfo.getUserId());
+		UserActionTypeEnum userActionTypeEnum = UserActionTypeEnum.getByType(userAction.getActionType());
+		//查询数据库里的信息
+		UserAction dbAction =  userActionMapper.selectByVideoIdAndCommentIdAndActionTypeAndUserId(userAction.getVideoId(),userAction.getCommentId(),userAction.getActionType(),userAction.getUserId());
+		userAction.setActionTime(new Date());
+		//根据不同的操作类型进行switch
+		switch (userActionTypeEnum){
+			case VIDEO_LIKE:
+			case VIDEO_COLLECT:
+				if(dbAction!=null){
+					userActionMapper.deleteByActionId(dbAction.getActionId());
+				}else{
+					userActionMapper.insert(userAction);
+				}
+				Integer changeCount = dbAction==null?1:-1;
+				videoInfoMapper.updateCountInfo(userAction.getVideoId(), userActionTypeEnum.getField(),changeCount);
+				//TODO更新es的点赞收藏的数量
+				break;
+			case VIDEO_COIN:
+				if(videoInfo.getUserId().equals(userAction.getUserId())){
+					throw new BusinessException("up主不能给自己投币");
+				}
+				if(dbAction!=null){
+					throw new BusinessException("已经投过硬币了");
+				}
+				//先减少自己的硬币
+				Integer updateCount = userInfoMapper.updateCoinCountInfo(userAction.getUserId(),-userAction.getActionCount());
+				if(updateCount==0){
+					throw new BusinessException("硬币不足");
+				}
+				//给up主加硬币
+				updateCount = userInfoMapper.updateCoinCountInfo(videoInfo.getUserId(),userAction.getActionCount());
+				if(updateCount==0){
+					throw new BusinessException("投币失败");
+				}
+				//更改用户行为和视频信息
+				userActionMapper.insert(userAction);
+				videoInfoMapper.updateCountInfo(userAction.getVideoId(), userActionTypeEnum.getField(),userAction.getActionCount());
+      			break;
+			case COMMENT_LIKE:
+			case COMMENT_HATE:
+				UserActionTypeEnum opposeTyEnum  = userActionTypeEnum==UserActionTypeEnum.COMMENT_LIKE?UserActionTypeEnum.COMMENT_HATE:UserActionTypeEnum.COMMENT_LIKE;
+				UserAction opposeAction = userActionMapper.selectByVideoIdAndCommentIdAndActionTypeAndUserId(userAction.getVideoId(),userAction.getCommentId(), opposeTyEnum.getType(),userAction.getUserId());
+				if(opposeAction!=null){
+					userActionMapper.deleteByActionId(opposeAction.getActionId());
+				}
+				if(dbAction!=null){
+					userActionMapper.deleteByActionId(dbAction.getActionId());
+				}else {
+					userActionMapper.insert(userAction);
+				}
+				changeCount = dbAction==null?1:-1;
+				Integer opposChangeCount =-changeCount;
+				videoCommentMapper.updateCountInfo(userAction.getCommentId(),userActionTypeEnum.getField(),changeCount,
+						opposeAction!=null? opposeTyEnum.getField():null,opposChangeCount);
+				break;
+		}
+
 	}
 }

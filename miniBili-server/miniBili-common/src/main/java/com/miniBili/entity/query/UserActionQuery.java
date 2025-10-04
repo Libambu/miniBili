@@ -59,6 +59,15 @@ public class UserActionQuery extends BaseParam {
 
 	private String actionTimeEnd;
 
+	private Integer[] actionTypeArray;
+
+	public Integer[] getActionTypeArray() {
+		return actionTypeArray;
+	}
+
+	public void setActionTypeArray(Integer[] actionTypeArray) {
+		this.actionTypeArray = actionTypeArray;
+	}
 
 	public void setActionId(Integer actionId){
 		this.actionId = actionId;

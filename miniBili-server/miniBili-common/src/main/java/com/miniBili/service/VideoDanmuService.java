@@ -69,4 +69,5 @@ public interface VideoDanmuService {
 	 */
 	Integer deleteVideoDanmuByDanmuId(Integer danmuId);
 
+	void saveDanmu(VideoDanmu videoDanmu);
 }

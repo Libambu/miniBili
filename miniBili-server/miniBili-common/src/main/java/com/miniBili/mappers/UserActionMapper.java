@@ -40,7 +40,7 @@ public interface UserActionMapper<T,P> extends BaseMapper<T,P> {
 	/**
 	 * 根据VideoIdAndCommentIdAndActionIdAndUserId获取对象
 	 */
-	 T selectByVideoIdAndCommentIdAndActionIdAndUserId(@Param("videoId") String videoId,@Param("commentId") Integer commentId,@Param("actionId") Integer actionId,@Param("userId") String userId);
+	 T selectByVideoIdAndCommentIdAndActionTypeAndUserId(@Param("videoId") String videoId,@Param("commentId") Integer commentId,@Param("actionType") Integer actionType,@Param("userId") String userId);
 
 
 }

@@ -9,7 +9,7 @@ spring:
   application:
     name: miniBili-web
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/minibili?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/minibili?allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     username: root
     password: egco711.
     driver-class-name: com.mysql.cj.jdbc.Driver
