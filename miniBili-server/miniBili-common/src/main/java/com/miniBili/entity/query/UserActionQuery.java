@@ -1,5 +1,7 @@
 package com.miniBili.entity.query;
 
+
+
 import java.util.Date;
 
 
@@ -60,6 +62,16 @@ public class UserActionQuery extends BaseParam {
 	private String actionTimeEnd;
 
 	private Integer[] actionTypeArray;
+
+	private Boolean queryVideoInfo;
+
+	public Boolean getQueryVideoInfo() {
+		return queryVideoInfo;
+	}
+
+	public void setQueryVideoInfo(Boolean queryVideoInfo) {
+		this.queryVideoInfo = queryVideoInfo;
+	}
 
 	public Integer[] getActionTypeArray() {
 		return actionTypeArray;

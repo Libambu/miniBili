@@ -6,6 +6,9 @@ import com.miniBili.entity.query.UserVideoSeriesQuery;
 import com.miniBili.entity.po.UserVideoSeries;
 import com.miniBili.entity.vo.PaginationResultVO;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 /**
  *  业务接口
@@ -69,4 +72,18 @@ public interface UserVideoSeriesService {
 	 */
 	Integer deleteUserVideoSeriesBySeriesId(Integer seriesId);
 
+
+	List<UserVideoSeries> getUserAllSeries(@NotEmpty String userId);
+
+	void saveUserSeries(UserVideoSeries videoSeries, String videoIds);
+
+	void saveSeriesVideo(String userId,Integer seriesId,String videoIds);
+
+    void delSeriesVideo(String userId ,Integer seriesId,  String videoId);
+
+	void delVideoSeries(String userId, @NotNull Integer seriesId);
+
+	void changeVideoSeriesSort(String userId, @NotEmpty String seriesIds);
+
+	List<UserVideoSeries> findListWithVideoList(UserVideoSeriesQuery seriesQuery);
 }

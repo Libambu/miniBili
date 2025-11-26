@@ -32,6 +32,15 @@ public class UserFocusQuery extends BaseParam {
 
 	private String focusTimeEnd;
 
+	private Integer queryType;
+
+	public Integer getQueryType() {
+		return queryType;
+	}
+
+	public void setQueryType(Integer queryType) {
+		this.queryType = queryType;
+	}
 
 	public void setUserId(String userId){
 		this.userId = userId;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.component.ESsearchComponent;
 import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.enums.UserActionTypeEnum;
 import com.miniBili.entity.po.VideoComment;
@@ -17,6 +18,7 @@ import com.miniBili.mappers.VideoCommentMapper;
 import com.miniBili.mappers.VideoInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.enums.PageSize;
@@ -46,6 +48,8 @@ public class UserActionServiceImpl implements UserActionService {
     private UserInfoMapper userInfoMapper;
 	@Autowired
 	private VideoCommentMapper<VideoComment, VideoCommentQuery> videoCommentMapper;
+	@Autowired
+	private ESsearchComponent eSsearchComponent;
 
 	/**
 	 * 根据条件查询列表
@@ -197,7 +201,10 @@ public class UserActionServiceImpl implements UserActionService {
 				}
 				Integer changeCount = dbAction==null?1:-1;
 				videoInfoMapper.updateCountInfo(userAction.getVideoId(), userActionTypeEnum.getField(),changeCount);
-				//TODO更新es的点赞收藏的数量
+				//TODO更新es的点赞收藏的数量(已完成)
+				if(userActionTypeEnum==UserActionTypeEnum.VIDEO_COLLECT){
+					eSsearchComponent.updateDocCount(userAction.getVideoId(),"collectCount",changeCount);
+				}
 				break;
 			case VIDEO_COIN:
 				if(videoInfo.getUserId().equals(userAction.getUserId())){

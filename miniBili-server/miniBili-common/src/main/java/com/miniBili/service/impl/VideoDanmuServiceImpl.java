@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.component.ESsearchComponent;
 import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.enums.UserActionTypeEnum;
 import com.miniBili.entity.po.VideoInfo;
@@ -36,6 +37,9 @@ public class VideoDanmuServiceImpl implements VideoDanmuService {
 
 	@Autowired
 	private VideoInfoMapper<VideoInfo, VideoInfoQuery> videoInfoMapper;
+
+	@Autowired
+	private ESsearchComponent eSsearchComponent;
 
 	/**
 	 * 根据条件查询列表
@@ -155,6 +159,7 @@ public class VideoDanmuServiceImpl implements VideoDanmuService {
 		String field = UserActionTypeEnum.VIDEO_DANMU.getField();
 		Integer changeCount = 1;
 		videoInfoMapper.updateCountInfo(videoInfo.getVideoId(),field,changeCount);
-		//TODo更新es弹幕数量
+		//TODo更新es弹幕数量（已完成）
+		eSsearchComponent.updateDocCount(videoDanmu.getVideoId(),"danmuCount",1);
 	}
 }

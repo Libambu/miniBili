@@ -1,6 +1,9 @@
 package com.miniBili.mappers;
 
+import com.miniBili.entity.po.UserVideoSeries;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  *  数据库操作接口
@@ -25,4 +28,11 @@ public interface UserVideoSeriesMapper<T,P> extends BaseMapper<T,P> {
 	 T selectBySeriesId(@Param("seriesId") Integer seriesId);
 
 
+    List<T> selectUserAllSeries(String userId);
+
+	Integer selectMaxSort(String userId);
+
+    void changeSort(List<UserVideoSeries> videoSeriesList);
+
+	List<T> selectListWithVideo(@Param("query") P p);
 }

@@ -26,6 +26,9 @@ public class Constants {
     public static final String REDIS_KEY_SYS_SETTING = REDIS_KEY_PREFIX + "sysSetting:";
     public static final String REDIS_KEY_FILE_DEL = REDIS_KEY_PREFIX + "file:list:del:";
     public static final String REDIS_KEY_QUEUE_TRANSFER = REDIS_KEY_PREFIX + "queue:transfer:";
+    public static final String REDIS_KEY_VIDEO_SEAKCH_COUNT = REDIS_KEY_PREFIX + "video : search";
+
+
     public static final String VIDEOS_CODE_HEVC = "hevc";
     public static final String TS_NAME = "index.ts";
     public static final String M3U8_NAME = "index.m3u8";

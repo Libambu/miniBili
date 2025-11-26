@@ -1,9 +1,12 @@
 package com.miniBili.web.controller;
 
+import com.miniBili.annotation.RecordUserMessage;
+import com.miniBili.entity.enums.MessageTypeEnum;
 import com.miniBili.entity.po.UserAction;
 import com.miniBili.entity.vo.ResponseVO;
 import com.miniBili.service.UserActionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +23,7 @@ public class UserActionController extends ABaseController{
     private UserActionService userActionService;
 
     @RequestMapping("/doAction")
+    @RecordUserMessage(messageType = MessageTypeEnum.LIKE)
     public ResponseVO doAction(@NotEmpty String videoId,
                                @NotNull Integer actionType,
                                Integer actionCount,

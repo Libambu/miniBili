@@ -7,6 +7,7 @@ import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.miniBili.component.ESsearchComponent;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.config.AppConfig;
 import com.miniBili.entity.constants.Constants;
@@ -56,6 +57,8 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 	private VideoInfoMapper<VideoInfo, VideoInfoQuery> videoInfoMapper;
 	@Autowired
 	private VideoInfoFileMapper<VideoInfoFile,VideoInfoFileQuery> videoInfoFileMapper;
+	@Autowired
+	private ESsearchComponent eSsearchComponent;
 
 	/**
 	 * 根据条件查询列表
@@ -226,13 +229,13 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 			videoInfoPost.setLastUpdateTime(new Date());
 			//标记视频是否做了修改
 			Boolean changeVideoInfo = changeVideoInfo(videoInfoPost);
-			if(addFileList.isEmpty()){
+			if(!addFileList.isEmpty()){
 				//只涉及删除视频，就不用再审核了
 				videoInfoPost.setStatus(VideoStatusEnum.STATUS0.getStatus());
 			}else if(changeVideoInfo || updateFileName){
 				videoInfoPost.setStatus(VideoStatusEnum.STATUS2.getStatus());
 			}else {
-				videoInfoPost.setStatus(VideoStatusEnum.STATUS2.getStatus());
+				videoInfoPost.setStatus(VideoStatusEnum.STATUS3.getStatus());
 			}
 			videoInfoPostMapper.updateByVideoId(videoInfoPost,videoInfoPost.getVideoId());
 		}
@@ -342,7 +345,7 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 		if(!videoInfoPost.getVideoName().equals(dbFileInfo.getVideoName())
 				|| !videoInfoPost.getVideoCover().equals(dbFileInfo.getVideoCover())
 			    || !videoInfoPost.getTags().equals(dbFileInfo.getTags())
-				|| !videoInfoPost.getIntroduction().equals(dbFileInfo.getIntroduction())){
+				|| !videoInfoPost.getIntroduction().equals(dbFileInfo.getIntroduction()==null?"":dbFileInfo.getIntroduction())){
 			return true;
 		}else {
 			return false;
@@ -472,6 +475,7 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 		redisComponent.cleanDelFileList(videoId);
 
 		//TODO 保存信息到es中
+		eSsearchComponent.saveDoc(videoInfo);
 	}
 
 }

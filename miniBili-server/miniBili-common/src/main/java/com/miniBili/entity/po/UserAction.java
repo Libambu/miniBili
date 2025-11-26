@@ -51,6 +51,26 @@ public class UserAction implements Serializable {
 	 */
 	private String userId;
 
+	private String videoCover;
+
+	private String VideoName;
+
+	public String getVideoCover() {
+		return videoCover;
+	}
+
+	public void setVideoCover(String videoCover) {
+		this.videoCover = videoCover;
+	}
+
+	public String getVideoName() {
+		return VideoName;
+	}
+
+	public void setVideoName(String videoName) {
+		VideoName = videoName;
+	}
+
 	/**
 	 * 操作时间
 	 */

@@ -1,6 +1,10 @@
 package com.miniBili.entity.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 
@@ -30,6 +34,49 @@ public class UserVideoSeriesVideo implements Serializable {
 	 */
 	private Integer sort;
 
+
+	private String videoCover;
+
+	private String videoName;
+
+	private Integer playCount;
+
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Data createTime;
+
+	public String getVideoCover() {
+		return videoCover;
+	}
+
+	public void setVideoCover(String videoCover) {
+		this.videoCover = videoCover;
+	}
+
+	public String getVideoName() {
+		return videoName;
+	}
+
+	public void setVideoName(String videoName) {
+		this.videoName = videoName;
+	}
+
+	public Integer getPlayCount() {
+		return playCount;
+	}
+
+	public void setPlayCount(Integer playCount) {
+		this.playCount = playCount;
+	}
+
+	public Data getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Data createTime) {
+		this.createTime = createTime;
+	}
 
 	public void setSeriesId(Integer seriesId){
 		this.seriesId = seriesId;

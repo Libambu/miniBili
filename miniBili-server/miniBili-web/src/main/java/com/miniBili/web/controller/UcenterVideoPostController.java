@@ -2,13 +2,17 @@ package com.miniBili.web.controller;
 
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.enums.VideoStatusEnum;
 import com.miniBili.entity.po.VideoInfoFilePost;
 import com.miniBili.entity.po.VideoInfoPost;
+import com.miniBili.entity.query.VideoInfoFilePostQuery;
 import com.miniBili.entity.query.VideoInfoPostQuery;
 import com.miniBili.entity.vo.PaginationResultVO;
 import com.miniBili.entity.vo.ResponseVO;
+import com.miniBili.entity.vo.VideoPostEditInfoVo;
 import com.miniBili.entity.vo.VideoStatusCountInfo;
+import com.miniBili.exception.BusinessException;
 import com.miniBili.service.VideoInfoFilePostService;
 import com.miniBili.service.VideoInfoPostService;
 import com.miniBili.service.VideoInfoService;
@@ -140,6 +144,31 @@ public class UcenterVideoPostController extends ABaseController {
         videoStatusCountInfo.setInProgress(inProgress);
         return getSuccessResponseVO(videoStatusCountInfo);
     }
+
+    /**
+     * 修改视频时回显视频
+     * @param videoId
+     * @return
+     */
+    @RequestMapping("/getVideoByVideoId")
+    public ResponseVO getVideoByVideoId(@NotEmpty String videoId){
+        TokenInfoDto tokenInfoDto = getTokenInfoDto();
+        VideoInfoPost videoInfoPost = videoInfoPostService.getVideoInfoPostByVideoId(videoId);
+        if(videoInfoPost==null||!videoInfoPost.getUserId().equals(tokenInfoDto.getUserId())){
+            throw new BusinessException(ResponseCodeEnum.CODE_404);
+        }
+        VideoInfoFilePostQuery videoInfoFilePostQuery = new VideoInfoFilePostQuery();
+        videoInfoFilePostQuery.setVideoId(videoId);
+        videoInfoFilePostQuery.setOrderBy("file_index asc");
+        List<VideoInfoFilePost> videoInfoFilePostList = videoInfoFilePostService.findListByParam(videoInfoFilePostQuery);
+        VideoPostEditInfoVo vo = new VideoPostEditInfoVo();
+        vo.setVideoInfo(videoInfoPost);
+        vo.setVideoInfoFileList(videoInfoFilePostList);
+        return getSuccessResponseVO(vo);
+    }
+    /**
+     * 删除视频，修改视频弹幕评论懒得写了
+     */
 
 
 }

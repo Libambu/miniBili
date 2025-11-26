@@ -33,6 +33,55 @@ public class UserFocus implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date focusTime;
 
+	private String otherNickName;
+
+	private String otherUserId;
+
+	private String otherPersonIntroduction;
+
+	private String otherAvatar;
+
+	private Integer focusType;
+
+	public String getOtherNickName() {
+		return otherNickName;
+	}
+
+	public void setOtherNickName(String otherNickName) {
+		this.otherNickName = otherNickName;
+	}
+
+	public String getOtherUserId() {
+		return otherUserId;
+	}
+
+	public void setOtherUserId(String otherUserId) {
+		this.otherUserId = otherUserId;
+	}
+
+	public String getOtherAvatar() {
+		return otherAvatar;
+	}
+
+	public void setOtherAvatar(String otherAvatar) {
+		this.otherAvatar = otherAvatar;
+	}
+
+	public String getOtherPersonIntroduction() {
+		return otherPersonIntroduction;
+	}
+
+	public void setOtherPersonIntroduction(String otherPersonIntroduction) {
+		this.otherPersonIntroduction = otherPersonIntroduction;
+	}
+
+	public Integer getFocusType() {
+		return focusType;
+	}
+
+	public void setFocusType(Integer focusType) {
+		this.focusType = focusType;
+	}
 
 	public void setUserId(String userId){
 		this.userId = userId;

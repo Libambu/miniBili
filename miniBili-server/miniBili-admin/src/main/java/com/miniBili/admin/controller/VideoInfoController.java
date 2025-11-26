@@ -1,6 +1,8 @@
 package com.miniBili.admin.controller;
 
+import com.miniBili.annotation.RecordUserMessage;
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.enums.MessageTypeEnum;
 import com.miniBili.entity.enums.VideoStatusEnum;
 import com.miniBili.entity.po.VideoInfoPost;
 import com.miniBili.entity.query.VideoInfoPostQuery;
@@ -41,6 +43,7 @@ public class VideoInfoController extends ABaseController {
     }
 
     @RequestMapping("/auditVideo")
+    @RecordUserMessage(messageType = MessageTypeEnum.SYS)
     public ResponseVO auditVideo(@NotEmpty String videoId, @NotNull Integer status,String reason){
         videoInfoPostService.aduitVideo(videoId,status,reason);
         return getSuccessResponseVO(null);

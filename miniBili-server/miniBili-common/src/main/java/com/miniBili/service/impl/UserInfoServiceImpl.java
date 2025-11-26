@@ -11,9 +11,12 @@ import com.miniBili.entity.dto.TokenInfoDto;
 import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.enums.UserSexEnum;
 import com.miniBili.entity.enums.UserStatusEnum;
+import com.miniBili.entity.po.UserFocus;
 import com.miniBili.entity.po.UserInfo;
+import com.miniBili.entity.query.UserFocusQuery;
 import com.miniBili.entity.query.UserInfoQuery;
 import com.miniBili.exception.BusinessException;
+import com.miniBili.mappers.UserFocusMapper;
 import com.miniBili.utils.CopyTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Resource
 	private UserInfoMapper<UserInfo, UserInfoQuery> userInfoMapper;
+
+	@Autowired
+	private UserFocusMapper<UserFocus, UserFocusQuery> userFocusMapper;
 
 	/**
 	 * 根据条件查询列表
@@ -246,8 +252,21 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if(userInfo==null){
 			throw new BusinessException(ResponseCodeEnum.CODE_404);
 		}
-		//TODO 粉丝相关
-
+		//TODO 获赞数播放数
+		Integer fansCount = userFocusMapper.selectFansCount(userId);
+		Integer focusCount = userFocusMapper.selectFocusCount(userId);
+		userInfo.setFansCount(fansCount);
+		userInfo.setFocusCount(focusCount);
+		if(currentUserId==null){
+			userInfo.setHaveFocus(false);
+		}else{
+			UserFocus userFocus = userFocusMapper.selectByUserIdAndFocusUserId(currentUserId, userId);
+			if(userFocus==null){
+				userInfo.setHaveFocus(false);
+			}else {
+				userInfo.setHaveFocus(true);
+			}
+		}
 		return userInfo;
 	}
 

@@ -59,7 +59,7 @@ public class AccountController extends ABaseController{
 	@RequestMapping("/register")
 	public ResponseVO register(@NotEmpty @Email @Size(max = 150) String email,
 							   @NotEmpty @Size String nickName,
-							   @NotEmpty String password,
+							   @NotEmpty String reRegisterPassword,
 							   @NotEmpty String checkCodeKey,
 							   @NotEmpty String checkCode){
 
@@ -67,7 +67,7 @@ public class AccountController extends ABaseController{
 			if(!redisComponent.getCheckCode(checkCodeKey).equalsIgnoreCase(checkCode)){
 				throw new BusinessException("图片验证码不正确");
 			}
-			userInfoService.register(email,nickName,password);
+			userInfoService.register(email,nickName,reRegisterPassword);
 			return getSuccessResponseVO(null);
 		}finally {
 			redisComponent.cleanCheckCode(checkCodeKey);

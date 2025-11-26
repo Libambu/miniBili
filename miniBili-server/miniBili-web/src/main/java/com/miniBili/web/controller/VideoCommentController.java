@@ -1,6 +1,8 @@
 package com.miniBili.web.controller;
 
+import com.miniBili.annotation.RecordUserMessage;
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.enums.MessageTypeEnum;
 import com.miniBili.entity.enums.UserActionTypeEnum;
 import com.miniBili.entity.po.UserAction;
 import com.miniBili.entity.po.VideoComment;
@@ -39,6 +41,7 @@ public class VideoCommentController extends ABaseController{
     private VideoInfoService videoInfoService;
 
     @RequestMapping("/postComment")
+    @RecordUserMessage(messageType = MessageTypeEnum.COMMENT)
     public ResponseVO postComment(@NotEmpty String videoId,
                                   @NotEmpty @Size(max=500) String content,
                                   Integer replyCommentId,

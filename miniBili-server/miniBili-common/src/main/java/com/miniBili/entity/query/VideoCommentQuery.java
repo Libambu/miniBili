@@ -87,6 +87,16 @@ public class VideoCommentQuery extends BaseParam {
 
 	private Boolean loadChildren;
 
+	private Boolean queryVideoInfo;
+
+	public Boolean getQueryVideoInfo() {
+		return queryVideoInfo;
+	}
+
+	public void setQueryVideoInfo(Boolean queryVideoInfo) {
+		this.queryVideoInfo = queryVideoInfo;
+	}
+
 	public Boolean getLoadChildren() {
 		return loadChildren;
 	}

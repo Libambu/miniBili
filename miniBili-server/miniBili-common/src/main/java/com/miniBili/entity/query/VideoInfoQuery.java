@@ -1,6 +1,7 @@
 package com.miniBili.entity.query;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -148,6 +149,26 @@ public class VideoInfoQuery extends BaseParam {
 	private String lastPlayTimeEnd;
 
 	private Boolean queryUserInfo;
+
+	private String[] videoIdArray;
+
+	private List<String> excuteVideoId;
+
+	public List<String> getExcuteVideoId() {
+		return excuteVideoId;
+	}
+
+	public void setExcuteVideoId(List<String> excuteVideoId) {
+		this.excuteVideoId = excuteVideoId;
+	}
+
+	public String[] getVideoIdArray() {
+		return videoIdArray;
+	}
+
+	public void setVideoIdArray(String[] videoIdArray) {
+		this.videoIdArray = videoIdArray;
+	}
 
 	public Boolean getQueryUserInfo() {
 		return queryUserInfo;

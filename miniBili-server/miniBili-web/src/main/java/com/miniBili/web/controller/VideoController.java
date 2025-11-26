@@ -1,8 +1,10 @@
 package com.miniBili.web.controller;
 
+import com.miniBili.component.ESsearchComponent;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.dto.TokenInfoDto;
 import com.miniBili.entity.enums.ResponseCodeEnum;
+import com.miniBili.entity.enums.SearchOrderTypeEnum;
 import com.miniBili.entity.enums.UserActionTypeEnum;
 import com.miniBili.entity.enums.VideoRecommendTypeEnum;
 import com.miniBili.entity.po.UserAction;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/video")
@@ -42,6 +45,8 @@ public class VideoController extends ABaseController{
     private UserActionService userActionService;
     @Autowired
     private RedisComponent redisComponent;
+    @Autowired
+    private ESsearchComponent eSsearchComponent;
 
     /**
      * 获取推荐页
@@ -126,5 +131,18 @@ public class VideoController extends ABaseController{
     @RequestMapping("/reportVideoPlayOnline")
     public ResponseVO reportVideoPlayOnline(@NotEmpty String fileId,@NotEmpty String deviceId){
         return getSuccessResponseVO(redisComponent.reportVideoPlayOnline(fileId,deviceId));
+    }
+
+    @RequestMapping("/search")
+    public ResponseVO search(@NotEmpty String keyword,Integer orderType,Integer pageNo){
+        PaginationResultVO resultVO = eSsearchComponent.search(true,keyword,orderType,pageNo,30);
+        return getSuccessResponseVO(resultVO);
+    }
+
+    @RequestMapping("/getVideoRecommend")
+    public ResponseVO getVideoRecommend(@NotEmpty String keyword,@NotEmpty String videoId){
+        List<VideoInfo> list = eSsearchComponent.search(false, keyword, SearchOrderTypeEnum.VIDEO_PLAY.getType(), 1, 5).getList();
+        list = list.stream().filter(item->!item.getVideoId().equals(videoId)).collect(Collectors.toList());
+        return getSuccessResponseVO(list);
     }
 }

@@ -1,9 +1,16 @@
 package com.miniBili.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.entity.enums.ResponseCodeEnum;
+import com.miniBili.entity.po.UserInfo;
+import com.miniBili.entity.query.UserInfoQuery;
+import com.miniBili.exception.BusinessException;
+import com.miniBili.mappers.UserInfoMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.enums.PageSize;
@@ -24,6 +31,8 @@ public class UserFocusServiceImpl implements UserFocusService {
 
 	@Resource
 	private UserFocusMapper<UserFocus, UserFocusQuery> userFocusMapper;
+    @Autowired
+    private UserInfoMapper<UserInfo, UserInfoQuery> userInfoMapper;
 
 	/**
 	 * 根据条件查询列表
@@ -126,5 +135,30 @@ public class UserFocusServiceImpl implements UserFocusService {
 	@Override
 	public Integer deleteUserFocusByUserIdAndFocusUserId(String userId, String focusUserId) {
 		return this.userFocusMapper.deleteByUserIdAndFocusUserId(userId, focusUserId);
+	}
+
+	@Override
+	public void focusUser(String userId, String focusUserId) {
+		if(userId.equals(focusUserId)){
+			throw new BusinessException("不能对自己进行操作");
+		}
+		UserFocus dbInfo = userFocusMapper.selectByUserIdAndFocusUserId(userId,focusUserId);
+		if(dbInfo!=null){
+			return;
+		}
+		UserInfo userInfo = userInfoMapper.selectByUserId(focusUserId);
+		if(userInfo==null){
+			throw new BusinessException(ResponseCodeEnum.CODE_600);
+		}
+		UserFocus userFocus = new UserFocus();
+		userFocus.setFocusTime(new Date());
+		userFocus.setUserId(userId);
+		userFocus.setFocusUserId(focusUserId);
+		userFocusMapper.insert(userFocus);
+	}
+
+	@Override
+	public void cancleFocus(String userId, String focusUserId) {
+		userFocusMapper.deleteByUserIdAndFocusUserId(userId,focusUserId);
 	}
 }
