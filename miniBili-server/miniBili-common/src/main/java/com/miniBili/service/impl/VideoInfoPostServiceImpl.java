@@ -25,7 +25,12 @@ import com.miniBili.mappers.VideoInfoMapper;
 import com.miniBili.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.po.VideoInfoPost;
@@ -59,6 +64,8 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 	private VideoInfoFileMapper<VideoInfoFile,VideoInfoFileQuery> videoInfoFileMapper;
 	@Autowired
 	private ESsearchComponent eSsearchComponent;
+	@Autowired
+	private RocketMQTemplate rocketMQTemplate;
 
 	/**
 	 * 根据条件查询列表
@@ -272,7 +279,24 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 				videoInfoFilePost.setUserId(videoInfoPost.getUserId());
 				videoInfoFilePost.setVideoId(videoId);
 			}
-			redisComponent.addFile2TransFerQueue(videoId,addFileList);
+			//redisComponent.addFile2TransFerQueue(videoId,addFileList);
+			//修改为RocketMQ异步处理
+			String destination  = "video-add-topic";
+			addFileList.forEach(file->{
+				String key = file.getVideoId() + "_" + file.getFileId();
+				Message<VideoInfoFilePost> message = MessageBuilder.withPayload(file).setHeader("KEYS", key).build();
+				rocketMQTemplate.asyncSend(destination, message, new SendCallback() {
+					@Override
+					public void onSuccess(SendResult sendResult) {
+						log.info("消息发送成功 "+key);
+					}
+
+					@Override
+					public void onException(Throwable throwable) {
+						log.info("消息发送失败 "+key);
+					}
+				});
+			});
 		}
 
 	}

@@ -222,7 +222,7 @@ public class ESsearchComponent {
 
             SearchRequest searchRequest = new SearchRequest(appConfig.getEsIndexName());
             //设置查询
-            searchRequest.source().query(QueryBuilders.multiMatchQuery(keyword,"videoName","tage"));
+            searchRequest.source().query(QueryBuilders.multiMatchQuery(keyword,"videoName","tags"));
             //设置高亮
             if(highlight){
                 HighlightBuilder highlightBuilder = new HighlightBuilder();

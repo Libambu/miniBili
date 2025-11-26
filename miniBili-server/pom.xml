@@ -143,11 +143,13 @@
                 <artifactId>js</artifactId>
                 <version>21.3.0</version> <!-- 使用最新稳定版本 -->
             </dependency>
+
             <dependency>
                 <groupId>org.graalvm.js</groupId>
                 <artifactId>js-scriptengine</artifactId>
                 <version>21.3.0</version>
             </dependency>
+
 
         </dependencies>
     </dependencyManagement>
