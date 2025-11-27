@@ -150,7 +150,9 @@ public class RedisUtils<V> {
     }
 
     public Long incrementex(String key, long milliseconds) {
+        //返回自增后的最新值。
         Long count = redisTemplate.opsForValue().increment(key, 1);
+        //如果 key 是第一次出现（原值不存在），则在自增成功后给它设置过期时间。
         if (count == 1) {
             //设置过期时间1天
             expire(key, milliseconds);

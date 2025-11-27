@@ -83,7 +83,7 @@ public class UserMessageOperationAspect {
 
         //因为用户操作包括点赞，收藏，但是注解用的是点赞，所以要单独处理一下收藏
         MessageTypeEnum messageTypeEnum = recordUserMessage.messageType();
-        if(UserActionTypeEnum.VIDEO_COLLECT.getType().equals(messageTypeEnum.getType())){
+        if(UserActionTypeEnum.VIDEO_COLLECT.getType().equals(actionType)){
             messageTypeEnum = MessageTypeEnum.COLLECTION;
         }
         TokenInfoDto tokenInfoDto = getTokenInfoDto();

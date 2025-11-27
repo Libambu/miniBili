@@ -29,6 +29,7 @@ public class Constants {
     public static final String REDIS_KEY_VIDEO_SEAKCH_COUNT = REDIS_KEY_PREFIX + "video : search";
 
 
+
     public static final String VIDEOS_CODE_HEVC = "hevc";
     public static final String TS_NAME = "index.ts";
     public static final String M3U8_NAME = "index.m3u8";
@@ -41,4 +42,5 @@ public class Constants {
     public static final String REDIS_KEY_VIDEO_PLAY_COUNT_USER = REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREIFX + REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREIFX + "%s:%s";
 
     public static final Integer UPDATE_NICK_NAME_COIN = 3;
+    public static final String REDIS_KEY_VIDEO_PLAY_COUNT = REDIS_KEY_PREFIX + "video:play:countOneDay:";
 }

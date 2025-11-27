@@ -171,4 +171,16 @@ public class RedisComponent {
     }
 
 
+    public void addKeyWordCount(String keyWord){
+        redisUtils.zaddCount(Constants.REDIS_KEY_VIDEO_SEAKCH_COUNT,keyWord);
+    }
+
+    public List<String>getKeyWordList(Integer top){
+        return redisUtils.getZSetList(Constants.REDIS_KEY_VIDEO_SEAKCH_COUNT,top-1);
+    }
+
+    public void recordVideoPlayCount(String videoId) {
+        String data = DateUtil.format(new Date(),DateTimePatternEnum.YYYY_MM_DD.getPattern());
+        redisUtils.incrementex(Constants.REDIS_KEY_VIDEO_PLAY_COUNT,Constants.REDIS_KEY_EXPIRE_ONE_DAY);
+    }
 }

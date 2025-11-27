@@ -69,4 +69,5 @@ public interface VideoInfoService {
 	 */
 	Integer deleteVideoInfoByVideoId(String videoId);
 
+    void addReadCount(String videoId);
 }

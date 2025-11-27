@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.entity.enums.UserActionTypeEnum;
 import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.enums.PageSize;
@@ -126,5 +127,10 @@ public class VideoInfoServiceImpl implements VideoInfoService {
 	@Override
 	public Integer deleteVideoInfoByVideoId(String videoId) {
 		return this.videoInfoMapper.deleteByVideoId(videoId);
+	}
+
+	@Override
+	public void addReadCount(String videoId) {
+		videoInfoMapper.updateCountInfo(videoId, UserActionTypeEnum.VIDEO_PLAY.getField(), 1);
 	}
 }

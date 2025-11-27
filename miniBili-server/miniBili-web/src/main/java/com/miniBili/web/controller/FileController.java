@@ -6,6 +6,7 @@ import com.miniBili.entity.constants.Constants;
 import com.miniBili.entity.dto.SysSettingDto;
 import com.miniBili.entity.dto.TokenInfoDto;
 import com.miniBili.entity.dto.UploadingFileDto;
+import com.miniBili.entity.dto.VideoPlayDto;
 import com.miniBili.entity.enums.DateTimePatternEnum;
 import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.po.VideoInfoFile;
@@ -16,13 +17,20 @@ import com.miniBili.utils.DateUtil;
 import com.miniBili.utils.FFmpegUtils;
 import com.miniBili.utils.StringTools;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -37,6 +45,10 @@ import java.util.Date;
 @Validated
 @Slf4j
 public class FileController extends ABaseController{
+
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
+
     @Autowired
     private RedisComponent redisComponent;
 
@@ -161,10 +173,28 @@ public class FileController extends ABaseController{
     @RequestMapping("/videoResource/{fileId}")
     public void videoResource(HttpServletResponse response, @PathVariable @NotEmpty String fileId){
         VideoInfoFile videoInfoFile = videoInfoFileService.getVideoInfoFileByFileId(fileId);
+        //TODO 更新视频播放量
+        VideoPlayDto videoPlayDto = new VideoPlayDto();
+        videoPlayDto.setVideoId(videoInfoFile.getVideoId());
+        videoPlayDto.setFileIndex(videoInfoFile.getFileIndex());
+        TokenInfoDto tokenInfoDto = getTokenInfoFromCookie();
+        if(tokenInfoDto!=null){
+            videoPlayDto.setUserId(videoInfoFile.getUserId());
+        }
         String filePath = videoInfoFile.getFilePath();
         readFile(response,filePath + "/" + Constants.M3U8_NAME);
-        //TODO 更新视频播放量
+        String destination = "Video-Count-Topic";
+        rocketMQTemplate.asyncSend(destination, videoPlayDto, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("消息发送成功");
+            }
 
+            @Override
+            public void onException(Throwable throwable) {
+                log.info("消息发送失败");
+            }
+        });
     }
 
 
@@ -196,6 +226,21 @@ public class FileController extends ABaseController{
                 file.delete();
             }
         }
+    }
+
+    private TokenInfoDto getTokenInfoFromCookie(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Cookie[] cookies = request.getCookies();
+        if(cookies==null){
+            return null;
+        }
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().equalsIgnoreCase(Constants.TOKEN_WEB)){
+                String token = cookie.getValue();
+                return redisComponent.getTokenInfoDtoByToken(token);
+            }
+        }
+        return null;
     }
 
 }
