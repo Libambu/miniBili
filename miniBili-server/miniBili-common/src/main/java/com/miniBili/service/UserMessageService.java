@@ -2,6 +2,7 @@ package com.miniBili.service;
 
 import java.util.List;
 
+import com.miniBili.entity.dto.UserMessageCount;
 import com.miniBili.entity.enums.MessageTypeEnum;
 import com.miniBili.entity.query.UserMessageQuery;
 import com.miniBili.entity.po.UserMessage;
@@ -72,4 +73,5 @@ public interface UserMessageService {
 
 	void saveUserMessage(String videoId, String userId, MessageTypeEnum messageTypeEnum,String content,Integer replyCommentId);
 
+    List<UserMessageCount> getMessageTypeNoReadCount(String userId);
 }

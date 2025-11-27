@@ -84,7 +84,11 @@
 
 	<!-- 查询集合-->
 	<select id="selectList" resultMap="base_result_map" >
-		 SELECT <include refid="base_column_list" /> FROM user_message u <include refid="query_condition" />
+		 SELECT <include refid="base_column_list" /> ,user.avatar sendUserAvatar,user.nick_name  sendUserName,v.video_name,v.video_cover
+		FROM user_message u
+		left join video_info v on v.video_id = u.video_id
+		left join user_info user on user.user_id = u.send_user_id
+		<include refid="query_condition" />
 		 <if test="query.orderBy!=null">
 			 order by ${query.orderBy}
 		 </if>
@@ -361,6 +365,11 @@
 	<!-- 根据PrimaryKey获取对象-->
 	<select id="selectByMessageId" resultMap="base_result_map" >
 		select <include refid="base_column_list" /> from user_message u where message_id=#{messageId}
+	</select>
+
+
+    <select id="getMessageTypeNoReadCount" resultType="com.miniBili.entity.dto.UserMessageCount">
+		select message_type,count(1) as messageCount from minibili.user_message where user_id = #{userId} and read_type = 0 group by message_type
 	</select>
 
 </mapper>

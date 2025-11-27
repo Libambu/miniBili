@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.entity.dto.UserMessageCount;
 import com.miniBili.entity.dto.UserMessageExtendDto;
 import com.miniBili.entity.enums.MessageTypeEnum;
 import com.miniBili.entity.po.VideoComment;
@@ -194,5 +195,10 @@ public class UserMessageServiceImpl implements UserMessageService {
 		}
 		userMessage.setExtendJson(JsonUtils.converObj2Json(userMessageExtendDto));
 		userMessageMapper.insert(userMessage);;
+	}
+
+	@Override
+	public List<UserMessageCount> getMessageTypeNoReadCount(String userId) {
+		return userMessageMapper.getMessageTypeNoReadCount(userId);
 	}
 }
