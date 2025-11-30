@@ -8,6 +8,16 @@ import java.util.Date;
  */
 public class VideoDanmuQuery extends BaseParam {
 
+	private String VideoNameFuzzy;
+
+
+	public String getVideoNameFuzzy() {
+		return VideoNameFuzzy;
+	}
+
+	public void setVideoNameFuzzy(String videoNameFuzzy) {
+		VideoNameFuzzy = videoNameFuzzy;
+	}
 
 	/**
 	 * 自增ID

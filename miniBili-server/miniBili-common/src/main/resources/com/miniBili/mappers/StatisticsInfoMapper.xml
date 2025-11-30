@@ -276,6 +276,23 @@
 			</if>
 		</where>
 	</select>
+	<select id="selectTotalListByParam" resultMap="base_result_map">
+		select sum(statistics_count)  as statistics_count,data_type,s.statistics_date from statistics_info s
+		<include refid="query_condition"/>
+		group by data_type,statistics_date
+	</select>
+	<select id="findUserCountTotalInfoByParam" resultMap="base_result_map">
+		select count(1) statistics_count, DATE_FORMAT(join_time,'%Y-%m-%d') as statistics_date from user_info
+		<where>
+			<if test="query.statisticsDateStart!= null and query.statisticsDateStart!=''">
+				<![CDATA[ and  user_info.join_time>=str_to_date(#{query.statisticsDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.statisticsDateEnd!= null and query.statisticsDateEnd!=''">
+				<![CDATA[ and  user_info.join_time< date_sub(str_to_date(#{query.statisticsDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+		</where>
+		group by statistics_date order by  statistics_date asc
+	</select>
 
 
 </mapper>

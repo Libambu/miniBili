@@ -74,4 +74,8 @@ public interface StatisticsInfoService {
     void statisticsData();
 
 	Map<String, Integer> getStatisticsInfoALL(String userId);
+
+	List<StatisticsInfo> findTotalListByParam(StatisticsInfoQuery statisticsInfoQuery);
+
+	List<StatisticsInfo> findUserCountTotalInfoByParam(StatisticsInfoQuery statisticsInfoQuery);
 }

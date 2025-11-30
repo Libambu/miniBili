@@ -45,3 +45,10 @@ log:
 admin:
   account: admin
   password: admin123
+
+rocketmq:
+  name-server: 47.93.248.85:9876
+  producer:
+    group: videoAdd-producer-group
+  consumer:
+    group: videoAdd-consume-group
