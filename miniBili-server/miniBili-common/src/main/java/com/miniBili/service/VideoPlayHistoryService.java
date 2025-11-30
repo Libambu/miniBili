@@ -2,6 +2,7 @@ package com.miniBili.service;
 
 import java.util.List;
 
+import com.miniBili.entity.dto.VideoPlayDto;
 import com.miniBili.entity.query.VideoPlayHistoryQuery;
 import com.miniBili.entity.po.VideoPlayHistory;
 import com.miniBili.entity.vo.PaginationResultVO;
@@ -69,4 +70,5 @@ public interface VideoPlayHistoryService {
 	 */
 	Integer deleteVideoPlayHistoryByUserIdAndVideoId(String userId,String videoId);
 
+    void saveHistory(VideoPlayDto videoPlayDto);
 }

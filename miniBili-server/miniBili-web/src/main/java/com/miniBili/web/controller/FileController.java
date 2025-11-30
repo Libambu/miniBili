@@ -173,7 +173,6 @@ public class FileController extends ABaseController{
     @RequestMapping("/videoResource/{fileId}")
     public void videoResource(HttpServletResponse response, @PathVariable @NotEmpty String fileId){
         VideoInfoFile videoInfoFile = videoInfoFileService.getVideoInfoFileByFileId(fileId);
-        //TODO 更新视频播放量
         VideoPlayDto videoPlayDto = new VideoPlayDto();
         videoPlayDto.setVideoId(videoInfoFile.getVideoId());
         videoPlayDto.setFileIndex(videoInfoFile.getFileIndex());

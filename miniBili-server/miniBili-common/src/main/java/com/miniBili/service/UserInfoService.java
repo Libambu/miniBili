@@ -3,6 +3,7 @@ package com.miniBili.service;
 import java.util.List;
 
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.dto.UserCountInfoDto;
 import com.miniBili.entity.po.UserInfo;
 import com.miniBili.entity.query.UserInfoQuery;
 import com.miniBili.entity.vo.PaginationResultVO;
@@ -116,4 +117,6 @@ public interface UserInfoService {
 	UserInfo getUserDetail(String currentUserId,String userId);
 
 	void updateUserInfo(UserInfo userInfo, TokenInfoDto tokenInfoDto);
+
+    UserCountInfoDto getUserCountInfo(TokenInfoDto tokenInfoDto);
 }

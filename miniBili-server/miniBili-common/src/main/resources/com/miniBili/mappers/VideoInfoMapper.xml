@@ -865,5 +865,8 @@
 	<select id="selectByVideoId" resultMap="base_result_map" >
 		select <include refid="base_column_list" /> from video_info v where video_id=#{videoId}
 	</select>
+	<select id="selectSumCountInfo" resultType="com.miniBili.entity.dto.CountInfoDto">
+		select ifnull(sum(play_count),0) playCount, ifnull(sum(like_count),0) likeCount from video_info where user_id = #{userId}
+	</select>
 
 </mapper>

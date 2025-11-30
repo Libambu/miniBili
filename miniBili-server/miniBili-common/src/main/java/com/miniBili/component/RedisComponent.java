@@ -18,6 +18,7 @@ import javax.validation.constraints.Negative;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -181,6 +182,11 @@ public class RedisComponent {
 
     public void recordVideoPlayCount(String videoId) {
         String data = DateUtil.format(new Date(),DateTimePatternEnum.YYYY_MM_DD.getPattern());
-        redisUtils.incrementex(Constants.REDIS_KEY_VIDEO_PLAY_COUNT,Constants.REDIS_KEY_EXPIRE_ONE_DAY);
+        redisUtils.incrementex(Constants.REDIS_KEY_VIDEO_PLAY_COUNT+data+":"+videoId,Constants.REDIS_KEY_EXPIRE_ONE_DAY);
+    }
+
+    public Map<String,Integer>getVideoPlayCount(String data){
+        Map<String,Integer>videoPlayMap = redisUtils.getBatch(Constants.REDIS_KEY_VIDEO_PLAY_COUNT+data);
+        return videoPlayMap;
     }
 }

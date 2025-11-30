@@ -1,5 +1,6 @@
 package com.miniBili.mappers;
 
+import com.miniBili.entity.dto.CountInfoDto;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -32,4 +33,6 @@ public interface VideoInfoMapper<T,P> extends BaseMapper<T,P> {
 	 * @param changeCount
 	 */
     void updateCountInfo(String videoId, String field, Integer changeCount);
+
+    CountInfoDto selectSumCountInfo(String userId);
 }

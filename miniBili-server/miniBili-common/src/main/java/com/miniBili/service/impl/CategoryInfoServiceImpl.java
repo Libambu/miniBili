@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.constants.Constants;
+import com.miniBili.entity.query.VideoInfoQuery;
 import com.miniBili.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
 	private CategoryInfoMapper<CategoryInfo, CategoryInfoQuery> categoryInfoMapper;
     @Autowired
     private RedisComponent redisComponent;
+    @Autowired
+    private VideoInfoServiceImpl videoInfoService;
 
 	/**
 	 * 根据条件查询列表
@@ -197,8 +200,12 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
 
 	@Override
 	public void delCategory(Integer categoryId) {
-		//TODO查询分类下是否有视频，有就不能删喔
-
+		VideoInfoQuery videoInfoQuery = new VideoInfoQuery();
+		videoInfoQuery.setCategoryId(categoryId);
+		Integer count =  videoInfoService.findCountByParam(videoInfoQuery);
+		if(count>0){
+			throw  new BusinessException("分类下有视频信息无法删除");
+		}
 		//要删该分类下层的分类,一条SQL完成
 		CategoryInfoQuery query = new CategoryInfoQuery();
 		query.setCategoryIdOrPcategoryId(categoryId);

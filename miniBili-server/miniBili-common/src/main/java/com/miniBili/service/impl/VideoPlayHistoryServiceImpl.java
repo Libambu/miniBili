@@ -1,9 +1,11 @@
 package com.miniBili.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.miniBili.entity.dto.VideoPlayDto;
 import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.enums.PageSize;
@@ -126,5 +128,15 @@ public class VideoPlayHistoryServiceImpl implements VideoPlayHistoryService {
 	@Override
 	public Integer deleteVideoPlayHistoryByUserIdAndVideoId(String userId, String videoId) {
 		return this.videoPlayHistoryMapper.deleteByUserIdAndVideoId(userId, videoId);
+	}
+
+	@Override
+	public void saveHistory(VideoPlayDto videoPlayDto) {
+		VideoPlayHistory videoPlayHistory = new VideoPlayHistory();
+		videoPlayHistory.setVideoId(videoPlayDto.getVideoId());
+		videoPlayHistory.setUserId(videoPlayDto.getUserId());
+		videoPlayHistory.setFileIndex(videoPlayDto.getFileIndex());
+		videoPlayHistory.setLastUpdateTime(new Date());
+		videoPlayHistoryMapper.insertOrUpdate(videoPlayHistory);
 	}
 }

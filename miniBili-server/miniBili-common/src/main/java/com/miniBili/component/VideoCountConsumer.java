@@ -2,12 +2,15 @@ package com.miniBili.component;
 
 import com.miniBili.entity.dto.VideoPlayDto;
 import com.miniBili.entity.enums.SearchOrderTypeEnum;
+import com.miniBili.entity.po.VideoPlayHistory;
 import com.miniBili.service.VideoInfoService;
+import com.miniBili.service.VideoPlayHistoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -23,15 +26,18 @@ public class VideoCountConsumer implements RocketMQListener<VideoPlayDto> {
     private RedisComponent redisComponent;
     @Autowired
     private ESsearchComponent esSearchComponent;
+    @Autowired
+    private VideoPlayHistoryService videoPlayHistoryService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void onMessage(VideoPlayDto videoPlayDto) {
         try {
             //增加视频播放量，更新最新播放时间
             videoInfoService.addReadCount(videoPlayDto.getVideoId());
             //记录播放历史
             if(videoPlayDto.getUserId()!=null){
-
+                videoPlayHistoryService.saveHistory(videoPlayDto);
             }
             //更新日播放量，在数据图表中统计用到
             redisComponent.recordVideoPlayCount(videoPlayDto.getVideoId());

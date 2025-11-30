@@ -201,7 +201,6 @@ public class UserActionServiceImpl implements UserActionService {
 				}
 				Integer changeCount = dbAction==null?1:-1;
 				videoInfoMapper.updateCountInfo(userAction.getVideoId(), userActionTypeEnum.getField(),changeCount);
-				//TODO更新es的点赞收藏的数量(已完成)
 				if(userActionTypeEnum==UserActionTypeEnum.VIDEO_COLLECT){
 					eSsearchComponent.updateDocCount(userAction.getVideoId(),"collectCount",changeCount);
 				}

@@ -19,9 +19,7 @@ import com.miniBili.entity.po.VideoInfoFile;
 import com.miniBili.entity.po.VideoInfoFilePost;
 import com.miniBili.entity.query.*;
 import com.miniBili.exception.BusinessException;
-import com.miniBili.mappers.VideoInfoFileMapper;
-import com.miniBili.mappers.VideoInfoFilePostMapper;
-import com.miniBili.mappers.VideoInfoMapper;
+import com.miniBili.mappers.*;
 import com.miniBili.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -35,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 import com.miniBili.entity.po.VideoInfoPost;
 import com.miniBili.entity.vo.PaginationResultVO;
-import com.miniBili.mappers.VideoInfoPostMapper;
 import com.miniBili.service.VideoInfoPostService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -66,6 +63,8 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 	private ESsearchComponent eSsearchComponent;
 	@Autowired
 	private RocketMQTemplate rocketMQTemplate;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
 	/**
 	 * 根据条件查询列表
@@ -467,9 +466,9 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 		VideoInfo dbvideoInfo = videoInfoMapper.selectByVideoId(videoId);
 
 		if(dbvideoInfo==null){
-			//第一次投稿，给用户加积分
+			//第一次投稿，给用户加硬币
 			SysSettingDto sysSettingDto = redisComponent.getSystemSetting();
-			//TODO 给用户加硬币
+			userInfoMapper.updateCoinCountInfo(infopost.getUserId(),sysSettingDto.getPostVideoCoinCount());
 		}
 		//将审核表拷贝到正式表
 		VideoInfo videoInfo = CopyTools.copy(infopost,VideoInfo.class);
@@ -498,7 +497,6 @@ public class VideoInfoPostServiceImpl implements VideoInfoPostService {
 		}
 		redisComponent.cleanDelFileList(videoId);
 
-		//TODO 保存信息到es中
 		eSsearchComponent.saveDoc(videoInfo);
 	}
 

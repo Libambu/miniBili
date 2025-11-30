@@ -2,6 +2,7 @@ package com.miniBili.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.miniBili.entity.query.StatisticsInfoQuery;
 import com.miniBili.entity.po.StatisticsInfo;
@@ -70,4 +71,7 @@ public interface StatisticsInfoService {
 	 */
 	Integer deleteStatisticsInfoByStatisticsDateAndUserIdAndDataType(Date statisticsDate,String userId,Integer dataType);
 
+    void statisticsData();
+
+	Map<String, Integer> getStatisticsInfoALL(String userId);
 }

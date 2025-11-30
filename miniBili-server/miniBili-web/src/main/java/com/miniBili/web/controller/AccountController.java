@@ -6,6 +6,7 @@ import java.util.Map;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.constants.Constants;
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.dto.UserCountInfoDto;
 import com.miniBili.entity.vo.ResponseVO;
 import com.miniBili.exception.BusinessException;
 import com.miniBili.service.UserInfoService;
@@ -88,7 +89,6 @@ public class AccountController extends ABaseController{
 			String ip = getIpAddr();
 			TokenInfoDto tokenInfoDto = userInfoService.login(email, password, ip) ;
 			saveCookie(response, tokenInfoDto.getToken());
-			//TODO 设置粉丝硬币数关注数
 			return getSuccessResponseVO(tokenInfoDto);
 		} catch (NullPointerException e) {
 			throw new BusinessException("验证码已过期");
@@ -119,7 +119,6 @@ public class AccountController extends ABaseController{
 			TokenInfoDto tokenInfoDto1 = redisComponent.saveTokenInfo(tokenInfoDto);
 			saveCookie(response,tokenInfoDto1.getToken());
 		}
-		//TODo 设置硬币粉丝关注
 		return getSuccessResponseVO(tokenInfoDto);
 	}
 
@@ -128,6 +127,15 @@ public class AccountController extends ABaseController{
 		cleanCookie(response);
 		return getSuccessResponseVO(null);
 	}
+
+	@RequestMapping("/getUserCountInfo")
+	public ResponseVO getUserCountInfo(){
+		TokenInfoDto tokenInfoDto = getTokenInfoDto();
+		UserCountInfoDto userCountInfoDto = userInfoService.getUserCountInfo(tokenInfoDto);
+		return getSuccessResponseVO(userCountInfoDto);
+	}
+
+
 
 
 }

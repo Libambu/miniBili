@@ -7,7 +7,10 @@ import javax.annotation.Resource;
 
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.constants.Constants;
+import com.miniBili.entity.dto.CountInfoDto;
+import com.miniBili.entity.dto.SysSettingDto;
 import com.miniBili.entity.dto.TokenInfoDto;
+import com.miniBili.entity.dto.UserCountInfoDto;
 import com.miniBili.entity.enums.ResponseCodeEnum;
 import com.miniBili.entity.enums.UserSexEnum;
 import com.miniBili.entity.enums.UserStatusEnum;
@@ -17,6 +20,7 @@ import com.miniBili.entity.query.UserFocusQuery;
 import com.miniBili.entity.query.UserInfoQuery;
 import com.miniBili.exception.BusinessException;
 import com.miniBili.mappers.UserFocusMapper;
+import com.miniBili.mappers.VideoInfoMapper;
 import com.miniBili.utils.CopyTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +48,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
 	private UserFocusMapper<UserFocus, UserFocusQuery> userFocusMapper;
+    @Autowired
+    private VideoInfoMapper videoInfoMapper;
 
 	/**
 	 * 根据条件查询列表
@@ -218,9 +224,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 		newUser.setJoinTime(new Date());
 		newUser.setStatus(UserStatusEnum.enable.getStatus());
 		newUser.setTheme(Constants.ONE);
-		//TODO 初始化用户银币
-		newUser.setTotalCoinCount(10);
-		newUser.setCurrentCoinCount(10);
+		SysSettingDto sysSettingDto = redisComponent.getSystemSetting();
+		newUser.setTotalCoinCount(sysSettingDto.getRegisterCoinCount());
+		newUser.setCurrentCoinCount(sysSettingDto.getRegisterCoinCount());
 		userInfoMapper.insert(newUser);
 	}
 
@@ -252,9 +258,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if(userInfo==null){
 			throw new BusinessException(ResponseCodeEnum.CODE_404);
 		}
-		//TODO 获赞数播放数
+		CountInfoDto countInfoDto = videoInfoMapper.selectSumCountInfo(userInfo.getUserId());
 		Integer fansCount = userFocusMapper.selectFansCount(userId);
 		Integer focusCount = userFocusMapper.selectFocusCount(userId);
+		userInfo.setLikeCount(countInfoDto.getLikeCount());
+		userInfo.setPlayCount(countInfoDto.getPlayCount());
 		userInfo.setFansCount(fansCount);
 		userInfo.setFocusCount(focusCount);
 		if(currentUserId==null){
@@ -295,5 +303,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if(updateToken){
 			redisComponent.updateTokenInfo(tokenInfoDto);
 		}
+	}
+
+	@Override
+	public UserCountInfoDto getUserCountInfo(TokenInfoDto tokenInfoDto) {
+		UserInfo user = getUserInfoByUserId(tokenInfoDto.getUserId());
+		Integer fansCount =  userFocusMapper.selectFansCount(user.getUserId());
+		Integer focusCount = userFocusMapper.selectFocusCount(user.getUserId());
+		UserCountInfoDto userCountInfoDto = new UserCountInfoDto();
+		userCountInfoDto.setFansCount(fansCount);
+		userCountInfoDto.setFocusCount(focusCount);
+		userCountInfoDto.setCurrentCoinCount(user.getCurrentCoinCount());
+		return userCountInfoDto;
 	}
 }
