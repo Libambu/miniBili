@@ -12,6 +12,10 @@ miniBili 是一套在线视频分享系统，采用独立后端、双端一体�
 
 目前单体项目已经完成，后续计划拆分为微服务架构：以 Nacos 做服务注册与统一配置，Gateway 网关统一对外暴露接口并支持负载均衡，内部服务通过 OpenFeign 调用，Seata 负责分布式事务一致性 🚀。
 
+补充一：目前微服务项目已经开始搭建，项目结果图如下
+
+<img src="https://github.com/Libambu/miniBili/blob/main/image/Architecture.png">
+
 ---
 
 ## 账号模块
