@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    # 给微服务起名字，也是注册到 Nacos 时的 serviceId。
+    name: miniBili-cloud-gateway
+  cloud:
+    nacos:
+      discovery:
+        # Nacos-注册中心 的地址
+        server-addr: 127.0.0.1:8848
+      config:
+        #Nacos-配置中心 的地址
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        shared-configs:
+          - ${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+    gateway:
+      routes:
+        - id: web
+          #lb  loadBalance负载均衡
+          uri: lb://miniBili-cloud-web
+          predicates:
+            - Path=/web/**
+          filters:
+            # 把请求路径最左边的 1 段（即第一个 / 段）去掉后再转发给下游服务
+            - StripPrefix=1
+
+        - id: admin
+          #lb  loadBalance负载均衡
+          uri: lb://miniBili-cloud-admin
+          predicates:
+            - Path=/admin/**
+          filters:
+            # 把请求路径最左边的 1 段（即第一个 / 段）去掉后再转发给下游服务
+            - StripPrefix=1
+            - AdminFilter

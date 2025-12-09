@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    # 给微服务起名字，也是注册到 Nacos 时的 serviceId。
+    name: miniBili-cloud-web
+  cloud:
+    nacos:
+      discovery:
+        # Nacos-注册中心 的地址
+        server-addr: 127.0.0.1:8848
+      config:
+        #Nacos-配置中心 的地址
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        shared-configs:
+          - ${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}

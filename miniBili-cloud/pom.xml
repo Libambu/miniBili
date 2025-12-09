@@ -48,7 +48,7 @@
         <commons.io.version>2.5</commons.io.version>
         <feign-okhttp.version>10.2.0</feign-okhttp.version>
         <okhttp3.version>4.12.0</okhttp3.version>
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <captcha.verion>1.6.2</captcha.verion>
         <es.version>3.3.2</es.version>
     </properties>
