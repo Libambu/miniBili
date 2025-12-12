@@ -1,104 +1,117 @@
 import Request from "./Request";
-//单服务版本
+//微服务版本
+const server_web = "/web";
+const server_file = "/file";
+const server_interact = "/interact";
+
 const Api = {
-    checkCode: "/account/checkCode",
-    login: "/account/login",
-    logout: "/account/logout",
-    register: "/account/register",
-    autoLogin: "/account/autoLogin",
-    getUserCountInfo: "/account/getUserCountInfo",
-    sourcePath: "/api/file/getResource?sourceName=",
-    loadAllCategory: "/category/loadAllCategory",
-    getSysSetting: "/sysSetting/getSetting",
-    //发布视频
-    preUploadVideo: "/file/preUploadVideo",
-    uploadVideo: "/file/uploadVideo",
-    delUploadVideo: "/file/delUploadVideo",
-    postVideo: "/ucenter/postVideo",
-    saveVideoInteraction: "/ucenter/saveVideoInteraction",
-    getVideoByVideoId: "/ucenter/getVideoByVideoId",
-    loadUcenterVideoList: "/ucenter/loadVideoList",
-    getUcenterVideoCountInfo: "/ucenter/getVideoCountInfo",
-    uploadImage: "/file/uploadImage",
+    //web
+    checkCode: server_web + "/account/checkCode",
+    login: server_web + "/account/login",
+    logout: server_web + "/account/logout",
+    register: server_web + "/account/register",
+    autoLogin: server_web + "/account/autoLogin",
+	getUserCountInfo: server_web + "/account/getUserCountInfo",
+    loadAllCategory: server_web + "/category/loadAllCategory",
+    getSysSetting: server_web + "/sysSetting/getSetting",
+    getSearchKeywordTop: server_web + "/video/getSearchKeywordTop",
+    loadRecommendVideo: server_web + "/video/loadRecommendVideo",
+    loadVideo: server_web + "/video/loadVideo",
+
+    postVideo: server_web + "/ucenter/postVideo",
+    saveVideoInteraction: server_web + "/ucenter/saveVideoInteraction",
+    getVideoByVideoId: server_web + "/ucenter/getVideoByVideoId",
+    loadUcenterVideoList: server_web + "/ucenter/loadVideoList",
+    getUcenterVideoCountInfo: server_web + "/ucenter/getVideoCountInfo",
+
     //个人中心
-    ucLoadAllVideo: "/ucenter/loadAllVideo",
-    ucLoadComment: "/ucenter/loadComment",
-    ucDelComment: "/ucenter/delComment",
-    ucLoadDanmu: "/ucenter/loadDanmu",
-    ucDelDanmu: "/ucenter/delDanmu",
-    ucGetActualTimeStatisticsInfo: "/ucenter/getActualTimeStatisticsInfo",
-    getWeekStatisticsInfo: "/ucenter/getWeekStatisticsInfo",
-    ucDeleteVideo: "/ucenter/deleteVideo",
-    //获取视频列表
-    loadRecommendVideo: "/video/loadRecommendVideo",
-    loadVideo: "/video/loadVideo",
-    loadVideoPList: "/video/loadVideoPList",
-    getVideoResource: "/api/file/videoResource",
-    getVideoInfo: "/video/getVideoInfo",
-    //评论
-    loadComment: "/comment/loadComment",
-    postComment: "/comment/postComment",
-    userDelComment: "/comment/userDelComment",
-    userTopComment: "/comment/topComment",
-    userCancelTopComment: "/comment/cancelTopComment",
-    //弹幕
-    loadDanmu: "/danmu/loadDanmu",
-    postDanmu: "/danmu/postDanmu",
-    //上报在线人数
-    reportVideoPlayOnline: "/video/reportVideoPlayOnline",
-    //点赞，评论，投币，评论，收藏
-    userAction: "/userAction/doAction",
-    //播放历史
-    playHisotry: "/history/loadHistory",
-    delHistory: "/history/delHistory",
-    cleanHistory: "/history/cleanHistory",
-    //消息
-    getNoReadCount: "/message/getNoReadCount",
-    loadUserMessage: "/message/loadMessage",
-    delMessage: "/message/delMessage",
-    getNoReadCountGroup: "/message/getNoReadCountGroup",
-    readAll: "/message/readAll",
+    ucLoadAllVideo: server_web + "/ucenter/loadAllVideo",
+
+    ucGetActualTimeStatisticsInfo: server_web + "/ucenter/getActualTimeStatisticsInfo",
+    getWeekStatisticsInfo: server_web + "/ucenter/getWeekStatisticsInfo",
+    ucDeleteVideo: server_web + "/ucenter/deleteVideo",
+    loadVideoPList: server_web + "/video/loadVideoPList",
+    getVideoInfo: server_web + "/video/getVideoInfo",
+
     //个人主页
-    uHomeUpdateUserInfo: "/uhome/updateUserInfo",
-    uHomeLoadVideo: "/uhome/loadVideoList",
-    uHomeGetUsesrInfo: "/uhome/getUserInfo",
+    uHomeUpdateUserInfo: server_web + "/uhome/updateUserInfo",
+    uHomeLoadVideo: server_web + "/uhome/loadVideoList",
+    uHomeGetUsesrInfo: server_web + "/uhome/getUserInfo",
     //关注
-    uHomeFocus: "/uhome/focus",
+    uHomeFocus: server_web + "/uhome/focus",
     //取消关注
-    uHomeCancelFocus: "/uhome/cancelFocus",
+    uHomeCancelFocus: server_web + "/uhome/cancelFocus",
     //关注列表
-    uHomeFocusList: "/uhome/loadFocusList",
+    uHomeFocusList: server_web + "/uhome/loadFocusList",
     //粉丝列表
-    uHomeFansList: "/uhome/loadFansList",
+    uHomeFansList: server_web + "/uhome/loadFansList",
     //视频系列
-    uHomeSeriesLoadVideoSeries: "/uhome/series/loadVideoSeries",
+    uHomeSeriesLoadVideoSeries: server_web + "/uhome/series/loadVideoSeries",
     //获取系列视频
-    uHomeSeriesLoadAllVideo: "/uhome/series/loadAllVideo",
+    uHomeSeriesLoadAllVideo: server_web + "/uhome/series/loadAllVideo",
     //保存系列
-    uHomeSeriesSaveVideoSeries: "/uhome/series/saveVideoSeries",
+    uHomeSeriesSaveVideoSeries: server_web + "/uhome/series/saveVideoSeries",
     //修改系列顺序
-    uHomeSeriesChangeVideoSeriesSort: "/uhome/series/changeVideoSeriesSort",
+    uHomeSeriesChangeVideoSeriesSort: server_web + "/uhome/series/changeVideoSeriesSort",
     //获取系列详情
-    uHomeSeriesGetVideoSeriesDetail: "/uhome/series/getVideoSeriesDetail",
+    uHomeSeriesGetVideoSeriesDetail: server_web + "/uhome/series/getVideoSeriesDetail",
     //删除系列
-    uHomeSeriesDelVideoSeries: "/uhome/series/delVideoSeries",
+    uHomeSeriesDelVideoSeries: server_web + "/uhome/series/delVideoSeries",
     //保存系列视频
-    uHomeSeriesSaveSeriesVideo: "/uhome/series/saveSeriesVideo",
+    uHomeSeriesSaveSeriesVideo: server_web + "/uhome/series/saveSeriesVideo",
     //删除系列视频
-    uHomeSeriesDelSeriesVideo: "/uhome/series/delSeriesVideo",
+    uHomeSeriesDelSeriesVideo: server_web + "/uhome/series/delSeriesVideo",
     //获取所有列表
-    uHomeSeriesLoadVideoSeriesWithVideo: "/uhome/series/loadVideoSeriesWithVideo",
-    //收藏列表
-    uHomeLoadCollection: "/uhome/loadUserCollection",
+    uHomeSeriesLoadVideoSeriesWithVideo: server_web + "/uhome/series/loadVideoSeriesWithVideo",
+
     //设置主题
-    saveTheme: "/uhome/saveTheme",
+    saveTheme: server_web + "/uhome/saveTheme",
     //搜索
-    search: "/video/search",
-    getSearchKeywordTop: "/video/getSearchKeywordTop",
+    search: server_web + "/video/search",
     //推荐视频
-    getVideoRecommend: "/video/getVideoRecommend",
+    getVideoRecommend: server_web + "/video/getVideoRecommend",
     //热门视频
-    hotVideoList: "/video/loadHotVideoList"
+    hotVideoList: server_web + "/video/loadHotVideoList",
+
+    //播放历史
+    playHisotry: server_web + "/history/loadHistory",
+    delHistory: server_web + "/history/delHistory",
+    cleanHistory: server_web + "/history/cleanHistory",
+
+    //文件
+    sourcePath: "/api" + server_file + "/getResource?sourceName=",
+    getVideoResource: "/api" + server_file + "/videoResource",
+    uploadImage: server_file + "/uploadImage",
+    preUploadVideo: server_file + "/preUploadVideo",
+    uploadVideo: server_file + "/uploadVideo",
+    delUploadVideo: server_file + "/delUploadVideo",
+
+    //互动
+    loadComment: server_interact + "/comment/loadComment",
+    postComment: server_interact + "/comment/postComment",
+    userDelComment: server_interact + "/comment/userDelComment",
+    userTopComment: server_interact + "/comment/topComment",
+    userCancelTopComment: server_interact + "/comment/cancelTopComment",
+    //弹幕
+    loadDanmu: server_interact + "/danmu/loadDanmu",
+    postDanmu: server_interact + "/danmu/postDanmu",
+    //消息
+    getNoReadCount: server_interact + "/message/getNoReadCount",
+    loadUserMessage: server_interact + "/message/loadMessage",
+    delMessage: server_interact + "/message/delMessage",
+    getNoReadCountGroup: server_interact + "/message/getNoReadCountGroup",
+    readAll: server_interact + "/message/readAll",
+    //上报在线人数
+    reportVideoPlayOnline: server_interact + "/online/reportVideoPlayOnline",
+    //点赞，评论，投币，评论，收藏
+    userAction: server_interact + "/userAction/doAction",
+
+    //用户中心，主页 相关接口移到 互动模块
+    uHomeLoadCollection: server_interact + "/uhome/loadUserCollection",
+    ucLoadComment: server_interact + "/ucenter/loadComment",
+    ucDelComment: server_interact + "/ucenter/delComment",
+    ucLoadDanmu: server_interact + "/ucenter/loadDanmu",
+    ucDelDanmu: server_interact + "/ucenter/delDanmu",
 }
 
 //上传封面
