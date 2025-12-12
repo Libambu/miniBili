@@ -14,7 +14,7 @@ miniBili 是一套在线视频分享系统，采用独立后端、双端一体�
 
 补充一：目前微服务项目已经开始搭建，项目结果图如下
 
-<img src="https://github.com/Libambu/miniBili/blob/main/image/Architecture.png">
+<img src="https://github.com/Libambu/miniBili/blob/main/image/Architecture.jpg">
 
 ---
 
