@@ -1,6 +1,5 @@
 package com.miniBili.service.impl;
 
-import com.miniBili.component.ESsearchComponent;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.config.AppConfig;
 import com.miniBili.entity.constants.Constants;

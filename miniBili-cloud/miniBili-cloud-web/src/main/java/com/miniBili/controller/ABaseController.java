@@ -96,6 +96,15 @@ public class ABaseController {
         response.addCookie(cookie);
     }
 
+    protected void saveCookieAdmin(HttpServletResponse response,String token){
+        Cookie cookie = new Cookie(Constants.TOKEN_ADMIN,token);
+        //cookie.setMaxAge((Constants.REDIS_KEY_EXPIRE_ONE_DAY/1000));
+        //关闭浏览器后Cookie就失效会话
+        cookie.setMaxAge(-1);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+
     protected TokenInfoDto getTokenInfoDto(){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = request.getHeader(Constants.TOKEN_WEB);
@@ -121,4 +130,6 @@ public class ABaseController {
         }
 
     }
+
+
 }

@@ -42,3 +42,12 @@ spring:
           predicates:
             - Path=/file/**
 
+        - id: interact
+          #lb  loadBalance负载均衡
+          uri: lb://miniBili-cloud-interact
+          predicates:
+            - Path=/interact/**
+          filters:
+            # 把请求路径最左边的 1 段（即第一个 / 段）去掉后再转发给下游服务
+            - StripPrefix=1
+

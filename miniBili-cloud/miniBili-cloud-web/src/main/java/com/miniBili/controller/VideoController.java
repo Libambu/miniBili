@@ -1,6 +1,5 @@
 package com.miniBili.controller;
 
-import com.miniBili.component.ESsearchComponent;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.dto.TokenInfoDto;
 import com.miniBili.entity.enums.ResponseCodeEnum;
