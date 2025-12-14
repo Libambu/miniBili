@@ -42,7 +42,7 @@
 		<result column="comment_count" property="commentCount"/>
 		<result column="coin_count" property="coinCount"/>
 		<result column="collect_count" property="collectCount"/>
-		<result column="recommend_count" property="recommendType"/>
+		<result column="recommend_type" property="recommendType"/>
 	</resultMap>
 
 
@@ -158,7 +158,7 @@
 			,c.play_count,c.like_count,c.danmu_count,c.comment_count,c.coin_count,c.collect_count,c.recommend_type
 		</if>
 		<if test="query.queryUserInfo">
-			,u.nick_name,u.avatar
+			,u.nick_name as nickName,u.avatar
 		</if>
 		 FROM video_info_post v
 		<if test="query.queryCountInfo">

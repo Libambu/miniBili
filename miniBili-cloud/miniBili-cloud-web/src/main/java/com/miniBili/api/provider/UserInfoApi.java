@@ -3,6 +3,8 @@ package com.miniBili.api.provider;
 
 import com.miniBili.entity.constants.Constants;
 import com.miniBili.entity.po.UserInfo;
+import com.miniBili.entity.query.UserInfoQuery;
+import com.miniBili.entity.vo.PaginationResultVO;
 import com.miniBili.mappers.UserInfoMapper;
 import com.miniBili.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +32,10 @@ public class UserInfoApi {
     UserInfo getUserInfoByUseId(@RequestParam String userId){
         UserInfo userInfoByUserId = userInfoService.getUserInfoByUserId(userId);
         return  userInfoByUserId;
+    }
+
+    @RequestMapping(Constants.Inner_api_prefix + "/user/admin/getUserPage")
+    PaginationResultVO<UserInfo> findListByPage(UserInfoQuery userInfoQuery){
+        return userInfoService.findListByPage(userInfoQuery);
     }
 }

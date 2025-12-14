@@ -154,6 +154,16 @@ public class VideoInfoQuery extends BaseParam {
 
 	private List<String> excuteVideoId;
 
+	private Boolean queryCountInfo;
+
+	public Boolean getQueryCountInfo() {
+		return queryCountInfo;
+	}
+
+	public void setQueryCountInfo(Boolean queryCountInfo) {
+		this.queryCountInfo = queryCountInfo;
+	}
+
 	public List<String> getExcuteVideoId() {
 		return excuteVideoId;
 	}

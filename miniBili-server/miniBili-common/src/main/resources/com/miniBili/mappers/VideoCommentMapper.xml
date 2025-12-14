@@ -29,6 +29,9 @@
 		<result column="like_count" property="likeCount"  />
 		<!--讨厌数量-->
 		<result column="hate_count" property="hateCount"  />
+
+		<result column="hate_count" property="hateCount"  />
+
 	</resultMap>
 
 
@@ -142,7 +145,7 @@
 	<select id="selectList" resultMap="base_result_map" >
 		 SELECT <include refid="base_column_list" />
 		<if test="query.queryVideoInfo">
-			,vd.video_name,vd.video_cover,u.nick_name as nickName,u.avatar as avatar,u2.nick_name as replyNickName
+			,vd.video_name as videoName,vd.video_cover as videoCover,u.nick_name as nickName,u.avatar as avatar,u2.nick_name as replyNickName
 		</if>
 		FROM video_comment v
 		<if test="query.queryVideoInfo">

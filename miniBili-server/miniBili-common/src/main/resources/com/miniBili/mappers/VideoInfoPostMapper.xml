@@ -42,7 +42,7 @@
 		<result column="comment_count" property="commentCount"/>
 		<result column="coin_count" property="coinCount"/>
 		<result column="collect_count" property="collectCount"/>
-		<result column="recommend_count" property="recommendType"/>
+		<result column="recommend_type" property="recommendType"/>
 	</resultMap>
 
 

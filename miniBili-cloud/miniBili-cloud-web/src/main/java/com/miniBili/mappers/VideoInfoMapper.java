@@ -37,4 +37,6 @@ public interface VideoInfoMapper<T,P> extends BaseMapper<T,P> {
     void updateCountInfo(String videoId, String field, Integer changeCount);
 
     CountInfoDto selectSumCountInfo(String userId);
+
+    void setRecommend(String videoId);
 }

@@ -1,5 +1,6 @@
 package com.miniBili.controller;
 
+import com.miniBili.component.ESsearchComponent;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.dto.TokenInfoDto;
 import com.miniBili.entity.enums.ResponseCodeEnum;
@@ -119,16 +120,7 @@ public class VideoController extends ABaseController{
         return getSuccessResponseVO(fileList);
     }
 
-    /**
-     * 使用轮询获取在线人数
-     * @param fileId
-     * @param deviceId
-     * @return
-     */
-    @RequestMapping("/reportVideoPlayOnline")
-    public ResponseVO reportVideoPlayOnline(@NotEmpty String fileId,@NotEmpty String deviceId){
-        return getSuccessResponseVO(redisComponent.reportVideoPlayOnline(fileId,deviceId));
-    }
+
 
     @RequestMapping("/search")
     public ResponseVO search(@NotEmpty String keyword,Integer orderType,Integer pageNo){

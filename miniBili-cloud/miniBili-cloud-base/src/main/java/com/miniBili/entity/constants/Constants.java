@@ -50,4 +50,8 @@ public class Constants {
     public static final String AdminName = "miniBili-cloud-admin";
 
     public static final String WebName = "miniBili-cloud-web";
+
+    public static final String ResourceName = "miniBili-cloud-resource";
+
+    public static final String InteractName = "miniBili-cloud-interact";
 }

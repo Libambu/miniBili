@@ -131,4 +131,9 @@ public class VideoInfoServiceImpl implements VideoInfoService {
 	public void addReadCount(String videoId) {
 		videoInfoMapper.updateCountInfo(videoId, UserActionTypeEnum.VIDEO_PLAY.getField(), 1);
 	}
+
+	@Override
+	public void recommendVideo(String videoId) {
+		videoInfoMapper.setRecommend(videoId);
+	}
 }

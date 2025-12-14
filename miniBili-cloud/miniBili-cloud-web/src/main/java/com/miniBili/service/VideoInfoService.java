@@ -4,6 +4,7 @@ import com.miniBili.entity.po.VideoInfo;
 import com.miniBili.entity.query.VideoInfoQuery;
 import com.miniBili.entity.vo.PaginationResultVO;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 
@@ -70,4 +71,6 @@ public interface VideoInfoService {
 	Integer deleteVideoInfoByVideoId(String videoId);
 
     void addReadCount(String videoId);
+
+    void recommendVideo(@NotEmpty String videoId);
 }

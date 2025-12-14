@@ -5,10 +5,14 @@ import com.miniBili.entity.enums.SearchOrderTypeEnum;
 import com.miniBili.entity.po.UserInfo;
 import com.miniBili.entity.po.VideoInfo;
 import com.miniBili.entity.po.VideoInfoPost;
+import com.miniBili.entity.query.VideoInfoQuery;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @FeignClient(name = Constants.WebName)
 @Component
@@ -31,6 +35,5 @@ public interface VideoClient {
 
     @RequestMapping(Constants.Inner_api_prefix + "/video/updateDocCount")
     void updateDocCount(@RequestParam String videoId, @RequestParam String fieldName,@RequestParam Integer changeCount);
-
 
 }

@@ -100,7 +100,7 @@
 	<select id="selectList" resultMap="base_result_map" >
 		 SELECT <include refid="base_column_list" />
 		<if test="query.queryVideoInfo">
-			,vd.video_name,vd.video_cover,u.nick_name
+			,vd.video_name as videoName,vd.video_cover as videoCover,u.nick_name as nickName
 		</if>
 		FROM video_danmu v
 		<if test="query.queryVideoInfo">

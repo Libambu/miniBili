@@ -195,7 +195,7 @@
 	<select id="selectList" resultMap="base_result_map" >
 		 SELECT <include refid="base_column_list" />
 		<if test="query.queryUserInfo!=null">
-			,u.nick_name,u.avatar
+			,u.nick_name as nickName,u.avatar as avatar
 		</if>
 		 FROM video_info v
 		<if test="query.queryUserInfo!=null">
@@ -855,8 +855,11 @@
 		</if>
 		where video_id = #{videoId}
 	</update>
+    <update id="setRecommend">
+		update video_info set recommend_type = 1 where video_id = #{videoId}
+	</update>
 
-	<!-- 根据VideoId删除-->
+    <!-- 根据VideoId删除-->
 	<delete id="deleteByVideoId">
 		delete from video_info where video_id=#{videoId}
 	</delete>
