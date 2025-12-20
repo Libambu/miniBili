@@ -50,4 +50,29 @@ spring:
           filters:
             # 把请求路径最左边的 1 段（即第一个 / 段）去掉后再转发给下游服务
             - StripPrefix=1
+seata:
+  config:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: DEFAULT_GROUP
+      data-id: seataServer.properties
+      namespace: ""
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group : "DEFAULT_GROUP"
+      namespace: ""
+      username: ""
+      password: ""
+      context-path: ""
+      ##if use MSE Nacos with auth, mutex with username/password attribute
+      #access-key: ""
+      #secret-key: ""
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      default_tx_group: default
 

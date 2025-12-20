@@ -85,5 +85,10 @@ public class VideoInfoApi {
         videoInfoService.recommendVideo(videoId);
     }
 
+    @RequestMapping(Constants.Inner_api_prefix + "/video/getVideoCount")
+    Integer getVideoCount(@RequestBody VideoInfoQuery videoInfoQuery){
+        return videoInfoService.findCountByParam(videoInfoQuery);
+    }
+
 
 }

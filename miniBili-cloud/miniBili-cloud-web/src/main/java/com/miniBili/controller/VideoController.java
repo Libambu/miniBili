@@ -1,5 +1,6 @@
 package com.miniBili.controller;
 
+import com.miniBili.api.consumer.InteractClient;
 import com.miniBili.component.ESsearchComponent;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.dto.TokenInfoDto;
@@ -17,7 +18,6 @@ import com.miniBili.entity.vo.PaginationResultVO;
 import com.miniBili.entity.vo.ResponseVO;
 import com.miniBili.entity.vo.VideoInfoResultVO;
 import com.miniBili.exception.BusinessException;
-//import com.miniBili.service.UserActionService;
 import com.miniBili.service.VideoInfoFileService;
 import com.miniBili.service.VideoInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +38,12 @@ public class VideoController extends ABaseController{
     private VideoInfoService videoInfoService;
     @Autowired
     private VideoInfoFileService videoInfoFileService;
-    //@Autowired
-    //TODO 调用用户模块查询用户行为
-    //private UserActionService userActionService;
     @Autowired
     private RedisComponent redisComponent;
     @Autowired
     private ESsearchComponent eSsearchComponent;
+    @Autowired
+    private InteractClient interactClient;
 
     /**
      * 获取推荐页
@@ -99,7 +98,7 @@ public class VideoController extends ABaseController{
             query.setVideoId(videoId);
             query.setUserId(tokenInfoDto.getUserId());
             query.setActionTypeArray(new Integer[]{UserActionTypeEnum.VIDEO_LIKE.getType(),UserActionTypeEnum.VIDEO_COLLECT.getType(),UserActionTypeEnum.VIDEO_COIN.getType()});
-            //userActions = userActionService.findListByParam(query);
+            userActions = interactClient.getUserActionList(query);
         }
         VideoInfoResultVO resultVO = new VideoInfoResultVO();
         resultVO.setVideoInfo(videoInfo,userActions);

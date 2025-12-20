@@ -44,4 +44,7 @@ public interface WebClient {
     @RequestMapping(Constants.Inner_api_prefix + "/video/recommendVideo")
     void recommendVideo(@RequestParam String videoId);
 
+
+    @RequestMapping(Constants.Inner_api_prefix + "/video/getVideoCount")
+    Integer getVideoCount(@RequestBody VideoInfoQuery videoInfoQuery);
 }

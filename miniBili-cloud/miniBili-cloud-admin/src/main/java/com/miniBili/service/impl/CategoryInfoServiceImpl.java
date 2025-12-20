@@ -1,5 +1,6 @@
 package com.miniBili.service.impl;
 
+import com.miniBili.api.consumer.WebClient;
 import com.miniBili.component.RedisComponent;
 import com.miniBili.entity.enums.PageSize;
 import com.miniBili.entity.po.CategoryInfo;
@@ -12,6 +13,7 @@ import com.miniBili.mappers.CategoryInfoMapper;
 import com.miniBili.service.CategoryInfoService;
 import com.miniBili.utils.StringTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,9 +31,10 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
 	private CategoryInfoMapper<CategoryInfo, CategoryInfoQuery> categoryInfoMapper;
     @Autowired
     private RedisComponent redisComponent;
-	//TODO web模块提供视频查询接口
-    //@Autowired
-    //private VideoInfoServiceImpl videoInfoService;
+    @Qualifier("com.miniBili.api.consumer.WebClient")
+    @Autowired
+    private WebClient webClient;
+
 
 	/**
 	 * 根据条件查询列表
@@ -202,6 +205,7 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
 		videoInfoQuery.setCategoryId(categoryId);
 		Integer count =  0;
 				//长度.findCountByParam(videoInfoQuery);
+		count = webClient.getVideoCount(videoInfoQuery);
 		if(count>0){
 			throw  new BusinessException("分类下有视频信息无法删除");
 		}

@@ -14,8 +14,10 @@ import com.miniBili.exception.BusinessException;
 import com.miniBili.mappers.VideoCommentMapper;
 import com.miniBili.service.VideoCommentService;
 import com.miniBili.utils.StringTools;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -141,6 +143,8 @@ public class VideoCommentServiceImpl implements VideoCommentService {
 	}
 
 	@Override
+	@GlobalTransactional
+	//@Transactional(rollbackFor = Exception.class)
 	public void postComment(VideoComment comment, Integer replyCommentId) {
 		//首先查一下video是否可以评论
 		VideoInfo videoInfo = videoClient.getVideoInfoByVideoId(comment.getVideoId());
@@ -179,6 +183,7 @@ public class VideoCommentServiceImpl implements VideoCommentService {
 		if(comment.getpCommentId()==0){
 			videoClient.updateCountInfo(comment.getVideoId(), UserActionTypeEnum.VIDEO_COMMENT.getField(),1);
 		}
+		int a = 1/0;
 	}
 
 }
