@@ -34,6 +34,7 @@
 2.  **Redis**: 缓存服务
 3.  **RocketMQ**: 消息队列
 4.  **Elasticsearch**: 搜索引擎
+5.  **FFmpeg**: 视频处理
 
 ---
 
