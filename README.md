@@ -16,7 +16,7 @@ miniBili 是一套在线视频分享系统，采用独立后端、双端一体�
 
 补充二：目前微服务项目核心写完了，改了一些单服务bug
 
-补充三：更正分布式事务的bug，提供sql.sql脚本以及简单的部署说明DEPLOY.md
+补充三：更正分布式事务的bug，提供sql.sql脚本以及简单的部署说明DEPLOY.md，按照说明部署即可
 
 
 <img src="https://github.com/Libambu/miniBili/blob/main/image/Architecture.jpg">

@@ -1,3 +1,9 @@
+CREATE DATABASE IF NOT EXISTS minibili
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+use minibili;
+
 create table branch_table
 (
     branch_id         bigint        not null
