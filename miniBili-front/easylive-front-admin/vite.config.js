@@ -18,7 +18,7 @@ export default defineConfig({
         hmr: true,
         proxy: {
             "/api": {
-                target: "http://localhost:7071",//调用微服务版本的 后端要讲这里改成7071端口
+                target: "http://localhost:7070",//调用微服务版本的 后端要讲这里改成7071端口
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '/admin'),
             }

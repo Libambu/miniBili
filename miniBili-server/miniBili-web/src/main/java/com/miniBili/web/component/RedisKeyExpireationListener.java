@@ -26,6 +26,7 @@ public class RedisKeyExpireationListener extends KeyExpirationEventMessageListen
         if(!key.contains(Constants.REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE_PREIFX + Constants.REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREIFX)){
             return;
         }
+        //从key里头截取fileID
         Integer userKeyIndex = key.indexOf(Constants.REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREIFX) + Constants.REDIS_KEY_VIDEO_PLAY_COUNT_USER_PREIFX.length();
         String fileId = key.substring(userKeyIndex,userKeyIndex+20);
         redisComponent.decreamentPlayOnlineCount(String.format(Constants.REDIS_KEY_VIDEO_PLAY_COUNT_ONLINE,fileId));
